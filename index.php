@@ -25,7 +25,7 @@ if($toon_schakelaars=='yes') {
 				<input type="hidden" name="showallswitches" value="yes" />
 				<a href="#" onclick="document.getElementById(\'showallswitches\').submit();" style="text-decoration:none"><h2 >Schakelaars</h2></a>
 			</form>';
-	$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual')";
+	$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun')";
 	if (!isset($_POST['showallswitches'])) $sql.=" AND favorite like 'yes'";
 	$sql.=" order by volgorde asc, favorite desc, name asc";
 	if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -38,8 +38,7 @@ if($toon_schakelaars=='yes') {
 			$tdstyle = '';
 			if($group != $row['volgorde']) $tdstyle = 'style="'.$css_td_newgroup.'"';
 			$group = $row['volgorde'];
-			if($row['type']=='asun') {if(${'switchstatus'.$row['id_switch']}=="1") {$switchon = "off";} else {$switchon = "on";}}
-			else {if(${'switchstatus'.$row['id_switch']}=="on") {$switchon = "off";} else {$switchon = "on";}}
+			if($row['type']!='asun') if(${'switchstatus'.$row['id_switch']}=="on") {$switchon = "off";} else {$switchon = "on";}
 			echo '<tr>
 				<td><img id="'.$row['type'].'Icon" src="images/empty.gif" width="1px" height="1px" /></td>
 				<td align="right" '.$tdstyle.'>
@@ -66,11 +65,11 @@ if($toon_schakelaars=='yes') {
 				</select>';
 			} else if($row['type']=='asun') {
 				print '
-				<section class="slider">	
-				<input type="hidden" value="somfy" />
-				<input type="checkbox" value="switch'.$row['id_switch'].'" id="switch'.$row['id_switch'].'" name="switch'.$row['id_switch'].'" '; if(${'switchstatus'.$row['id_switch']}==1) {print 'checked';} print ' onChange="this.form.submit()"/>
-				<label for="switch'.$row['id_switch'].'"></label>
-				</section>';
+				<input type="hidden" name="switch" value="'.$row['id_switch'].'"/>
+				<input type="hidden" name="schakel" value="'.$row['id_switch'].'"/>
+				<input type="submit" id="somfydownIcon" name="somfy" value="down" class="abuttonsomfy handje gradient"/>
+				<input type="submit" id="somfyupIcon" name="somfy" value="up" class="abuttonsomfy handje gradient"/>
+			';
 			} else if($row['type']=='virtual') {
 				print '
 				<form method="post" action="#"><input type="submit" name="schakel" value="on" class="abutton handje gradient"/><input type="submit" name="schakel" value="off" class="abutton handje gradient"/></form>';

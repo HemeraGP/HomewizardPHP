@@ -170,6 +170,11 @@ function insertcrontijd($cron, $actie) {
 	$sql ="INSERT IGNORE INTO cronhistory (`cron`, `timestamp`, `actie`) VALUES ('$cron', '$timestamp', '$actie');";
 	if(!$result = $db->query($sql)){ echo ('Error in sql '.$sql.'<br/> [' . $db->error . ']');}
 }
+function setparameter($variable, $value) {
+	global $db, $debug;
+	$sql ="UPDATE settings SET value = '$value' WHERE variable like '$variable';";
+	if(!$result = $db->query($sql)){ echo ('Error in sql '.$sql.'<br/> [' . $db->error . ']');}
+}
 function notificatie($notify, $onderwerp, $bericht) {
 	global $email_from, $email_notificatie;
 	if(!isset($notify)) $notify = $email_notificatie;

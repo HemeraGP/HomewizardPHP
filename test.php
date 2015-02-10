@@ -4,10 +4,13 @@
 include "data.php";
 include "functions.php";
 echo '<div class="item wide gradient"><p class="number">2</p><br/>';
-insertcrontijd('test', 'aan');
-
-$last = laatstecrontijd('test', 'iets');
-echo date("Y-m-d H:i:s", $last['timestamp']);
+		$json = file_get_contents($jsonurl.'nf/edit/2/1/null/0,1,2/yes');
+		$data = null;
+		$data = json_decode($json,true);
+		if($data['status']=='ok') {
+			setparameter('actie_notify_poort', 'no');
+		}
+		print_r($data);
 
 echo '</div>';
 

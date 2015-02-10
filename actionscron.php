@@ -59,7 +59,7 @@ echo '<div class="item wide gradient" align="left"><p class="number">3</p><br/>A
 $tempw = 19;
 $tempk = 14;
 $voorwarmen = ceil(($tempw-$thermometerte5)*($tempw-$thermometerte1)*60);
-if($actie_timer_living=='yes' && $actie_thuis=='yes'){
+if($actie_timer_living=='yes'){
 	echo ' actief</b><br/><br/>';
 	if(in_array(date('N', time()), array(1,2,3,4))) {
 		echo 'Vandaag is het een werkdag en het is nu '.date('H:i', time()).'.<br/>';
@@ -129,15 +129,15 @@ echo '</div>';
 
 //Timer radiator badkamer
 echo '<div class="item wide gradient" align="left"><p class="number">3</p><br/>Actie timer radiator badkamer';
-$tempw = 22;
+$tempw = 23;
 $tempk = 15;
-if($actie_timer_badkamer=='yes' && $actie_thuis=='yes'){
+if($actie_timer_badkamer=='yes'){
 	echo ' actief</b><br/><br/>';
 	if(in_array(date('N', time()), array(1,2,3,4,5))) {
 		echo 'Vandaag is het een werkdag<br/>';
 		if((time()>(strtotime('6:00')-(($tempw-$thermometerte4)*(($tempw-$thermometerte1)*60)))) && (time()<(strtotime('7:30')))) {
 			echo 'Tussen 6 en 7:30, tijd voor warmte<br/>';
-			if($switchstatus6<$tempk) {
+			if($switchstatus6<$tempw) {
 				echo "radiator(6, ".$tempw.", 'c');sleep(2)<br/>";
 				if(!isset($_POST['showtest'])) {
 					radiator(6, $tempw, 'c', $email_notificatie, 'yes');sleep(2);
@@ -188,7 +188,7 @@ echo '</div>';
 
 //Timer radiator slaapkamer
 echo '<div class="item wide gradient" align="left"><p class="number">3</p><br/>Actie timer radiator slaapkamer ';
-if($actie_timer_slaapkamer=='yes' && $actie_thuis=='yes'){
+if($actie_timer_slaapkamer=='yes'){
 	echo ' actief</b><br/><br/>';
 	$tempw = 18;
 	$tempk = 5;
@@ -226,7 +226,7 @@ echo '</div>';
 echo '<div class="item wide gradient" align="left"><p class="number">3</p><br/>Actie timer radiator slaapkamer Tobi';
 $tempw = 18;
 $tempk = 5;
-if($actie_timer_slaapkamertobi=='yes' && $actie_thuis=='yes'){
+if($actie_timer_slaapkamertobi=='yes'){
 	echo ' actief</b><br/><br/>';
 	if(date('W', time()) %2 == 0) {
 		echo 'Het is een even weeknummer.<br/>';
@@ -325,6 +325,24 @@ echo '</div>';
 echo '<div class="item wide gradient" align="left"><p class="number">3</p><br/>Actie thuis';
 if($actie_thuis=='yes'){
 	echo ' actief</b><br/><br/>We zijn thuis';
+	if($actie_notify_poort=='yes') {
+		$json = file_get_contents($jsonurl.'nf/edit/1/4/null//yes');
+		$data = null;
+		$data = json_decode($json,true);
+		if($data['status']=='ok') {
+			setparameter('actie_notify_poort', 'no');
+		}
+		sleep(2);
+	}
+	if($actie_notify_garage=='yes') {
+		$json = file_get_contents($jsonurl.'nf/edit/2/1/null//yes');
+		$data = null;
+		$data = json_decode($json,true);
+		if($data['status']=='ok') {
+			setparameter('actie_notify_garage', 'no');
+		}
+		sleep(2);
+	}
 } else {
 	echo ' actief<br/>';
 	echo 'We zijn niet thuis<br/>';
@@ -333,6 +351,24 @@ if($actie_thuis=='yes'){
 	if($sensorstatus2=='yes') notificatie($email_notificatie ,'Beweging gedetecteerd in garage' ,'Beweging gedetecteerd in garage' );
 	if($sensorstatus3=='yes') notificatie($email_notificatie ,'ROOK gedetecteerd in de hall' ,'ROOK gedetecteerd in de hall' );
 	if($sensorstatus4=='yes') notificatie($email_notificatie ,'Bel voordeur ingedrukt' ,'Bel voordeur ingedrukt' );
+	if($actie_notify_poort=='no') {
+		$json = file_get_contents($jsonurl.'nf/edit/1/4/null/0,1,2/yes');
+		$data = null;
+		$data = json_decode($json,true);
+		if($data['status']=='ok') {
+			setparameter('actie_notify_poort', 'yes');
+		sleep(2);
+		}
+	}
+	if($actie_notify_garage=='no') {
+		$json = file_get_contents($jsonurl.'nf/edit/2/1/null/0,1,2/yes');
+		$data = null;
+		$data = json_decode($json,true);
+		if($data['status']=='ok') {
+			setparameter('actie_notify_garage', 'yes');
+		sleep(2);
+		}
+	}
 }
 echo '</div>';
 
