@@ -245,7 +245,7 @@ if($toon_sensoren=='yes') {
 				<input type="hidden" name="showallsensors" value="yes"/>
 				<a href="#" onclick="document.getElementById(\'showallsensors\').submit();" style="text-decoration:none"><h2>Sensoren</h2></a>
 			</form>';
-	$sql="select id_sensor, name, type, volgorde from sensors WHERE type in ('smoke','contact','doorbell','motion')";
+	$sql="select id_sensor, name, type, volgorde from sensors WHERE type in ('smoke','contact','doorbell','motion','light')";
 	if (!isset($_POST['showallsensors'])) $sql.=" AND favorite like 'yes'";
 	$sql.=" order by volgorde asc, favorite desc, name asc";
 	if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
