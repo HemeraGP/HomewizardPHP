@@ -260,6 +260,7 @@ if($toon_sensoren=='yes') {
 			if($type=="motion") $type = "Beweging";
 			if($type=="doorbell") $type = "Deurbel";
 			if($type=="smoke") $type = "Rook";
+			if($type=="light") $type = "Licht";
 			if(${'sensorstatus'.$row['id_sensor']} == "yes") {
 				echo '<td style="color:#F00; font-weight:bold">
 						<form action="history.php" method="post" id="'.$row['name'].'">
@@ -274,15 +275,22 @@ if($toon_sensoren=='yes') {
 					</form></td>';
 					}
        		if(${'sensorstatus'.$row['id_sensor']} == "yes") {echo '<td style="color:#A00; font-weight:bold">';} else {echo '<td>';}
-			if($type=="Magneet" && ${'sensorstatus'.$row['id_sensor']} == "no") { echo 'Gesloten'; }
-			else if ($type=="Magneet" && ${'sensorstatus'.$row['id_sensor']} == "yes") { echo 'Open'; }
-			else if ($type=="Beweging" && ${'sensorstatus'.$row['id_sensor']} == "yes") { echo 'Beweging'; }
-			else if ($type=="Beweging" && ${'sensorstatus'.$row['id_sensor']} == "no") { echo ''; }
-			else if ($type=="Deurbel" && ${'sensorstatus'.$row['id_sensor']} == "no") { echo ''; }
-			else if ($type=="Deurbel" && ${'sensorstatus'.$row['id_sensor']} == "yes") { echo 'Gebeld'; }
-			else if ($type=="Rook" && ${'sensorstatus'.$row['id_sensor']} == "no") { echo ''; }
-			else if ($type=="Rook" && ${'sensorstatus'.$row['id_sensor']} == "yes") { echo 'ROOK!!!'; }
-			else echo ${'sensorstatus'.$row['id_sensor']};
+			switch (${'sensorstatus'.$row['id_sensor']}){
+				case "no": switch ($type){
+					case "Magneet":echo 'Gesloten';Break;
+					case "Licht":echo 'Licht';Break;
+					default:Break;
+				} Break;
+				case "yes": switch ($type){
+					case "Magneet":echo 'Open';Break;
+					case "Beweging":echo 'Beweging';Break;
+					case "Deurbel":echo 'Gebeld';Break;
+					case "Rook":echo 'ROOK!!!';Break;
+					case "Licht":echo 'Donker';Break;
+					default:Break;
+				} Break;
+				Default: echo ${'sensorstatus'.$row['id_sensor']};Break;
+        	}
 			echo '</td>';
 			if(${'sensorstatus'.$row['id_sensor']} == "yes") {echo '<td style="color:#A00; font-weight:bold">'.${'sensortimestamp'.$row['id_sensor']}.'</td>';} else {echo '<td>'.${'sensortimestamp'.$row['id_sensor']}.'</td>';}
 			echo '</tr>';
