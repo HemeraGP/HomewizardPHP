@@ -180,9 +180,9 @@ if($toon_radiatoren=='yes') {
 				<input type="hidden" name="showallradiators" value="yes"/>
 				<a href="#" onclick="document.getElementById(\'showallradiators\').submit();" style="text-decoration:none"><h2>Radiatoren</h2></a>
 			</form>';
-	$sql="select id_switch, name, temp, volgorde from switches where type like 'radiator'";
-	if (!isset($_POST['showallradiators'])) $sql.=" AND favorite like 'yes'";
-	$sql.=" order by volgorde asc, favorite desc, name asc";
+	$sql="select r.id_switch, r.name as rname, r.temp, s.name as sname, r.volgorde from switches r join sensors s ON r.temp = s.id_sensor AND s.type like 'temp' where r.type like 'radiator'";
+	if (!isset($_POST['showallradiators'])) $sql.=" AND r.favorite like 'yes'";
+	$sql.=" order by r.volgorde asc, r.favorite desc, r.name asc";
 	if(!$result = $db->query($sql)){ echo ('There was an error running the query [' . $db->error . ']');}
 	if($result->num_rows>0) {
 		$group = 0;
@@ -194,9 +194,9 @@ if($toon_radiatoren=='yes') {
 			echo '<tr>
 			<td><img id="radiatorIcon" src="images/empty.gif" width="1px" height="1px" /></td>
 			<td align="right" '.$tdstyle.'>
-				<form action="switchhistory.php" method="post" id="'.$row['name'].'">
-					<input type="hidden" name="filter" value="'.$row['name'].'">
-					<a href="#" onclick="document.getElementById(\''.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
+				<form action="switchhistory.php" method="post" id="'.$row['rname'].'">
+					<input type="hidden" name="filter" value="'.$row['rname'].'">
+					<a href="#" onclick="document.getElementById(\''.$row['rname'].'\').submit();" style="text-decoration:none">'.$row['rname'].'</a>
 				</form></td>
 			<td width="60px" '.$tdstyle.'>
 				<form method="post" action="#">
@@ -224,10 +224,14 @@ if($toon_radiatoren=='yes') {
 			</td>
 			<td width="60px" '.$tdstyle.'>';
 			if(!empty($row['temp']) || $row['temp']==0) {
-				if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo '<font color="#880000">';
-				else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo '<font color="#000088">';
-				else echo '<font color="#008800">';
-				echo ${'thermometerte'.$row['temp']}.'°C';
+				echo '<form action="temp.php" method="post" id="temp'.$row['sname'].'">
+						<input type="hidden" name="filter" value="'.$row['sname'].'">
+						<a href="#" onclick="document.getElementById(\'temp'.$row['sname'].'\').submit();" style="text-decoration:none">';
+						if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo '<font color="#880000">';
+						else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo '<font color="#000088">';
+						else echo '<font color="#008800">';
+						echo ${'thermometerte'.$row['temp']}.'°C</a>
+					</form>';
 			}
 			echo '</font></td>
 			</tr>';
