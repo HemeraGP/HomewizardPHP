@@ -38,7 +38,7 @@ if($toon_schakelaars=='yes') {
 			$tdstyle = '';
 			if($group != $row['volgorde']) $tdstyle = 'style="'.$css_td_newgroup.'"';
 			$group = $row['volgorde'];
-			if($row['type']!='asun') if(${'switchstatus'.$row['id_switch']}=="on") {$switchon = "off";} else {$switchon = "on";}
+			if($row['type']!='asun') {if(${'switchstatus'.$row['id_switch']}=="on") {$switchon = "off";} else {$switchon = "on";}}
 			echo '<tr>
 				<td><img id="'.$row['type'].'Icon" src="images/empty.gif" width="1px" height="1px" /></td>
 				<td align="right" '.$tdstyle.'>
@@ -49,7 +49,7 @@ if($toon_schakelaars=='yes') {
 				</td>
 				<td width="115px" '.$tdstyle.' ><form method="post" action="#"><input type="hidden" name="switch" value="'.$row['id_switch'].'"/><input type="hidden" name="schakel" value="'.$switchon.'"/>';
 			if($row['type']=='dimmer') {
-				print '<select name="dimlevel"  class="abutton handje gradient" onChange="this.form.submit()" style="margin-top:4px">
+				echo '<select name="dimlevel"  class="abutton handje gradient" onChange="this.form.submit()" style="margin-top:4px">
 				<option '.${'switchstatus'.$row['id_switch']}.') selected>'.${'switchstatus'.$row['id_switch']}.'</option>
 				<option>0</option>
 				<option>10</option>
@@ -64,23 +64,23 @@ if($toon_schakelaars=='yes') {
 				<option>100</option>
 				</select>';
 			} else if($row['type']=='asun') {
-				print '
+				echo '
 				<input type="hidden" name="switch" value="'.$row['id_switch'].'"/>
 				<input type="hidden" name="schakel" value="'.$row['id_switch'].'"/>
-				<input type="submit" id="somfydownIcon" name="somfy" value="down" class="abuttonsomfy handje gradient"/>
-				<input type="submit" id="somfyupIcon" name="somfy" value="up" class="abuttonsomfy handje gradient"/>
+				<input type="submit" id="somfydownIcon" name="schakel" value="down" class="abuttonsomfy handje gradient"/>
+				<input type="submit" id="somfyupIcon" name="schakel" value="up" class="abuttonsomfy handje gradient"/>
 			';
 			} else if($row['type']=='virtual') {
-				print '
+				echo '
 				<form method="post" action="#"><input type="submit" name="schakel" value="on" class="abutton handje gradient"/><input type="submit" name="schakel" value="off" class="abutton handje gradient"/></form>';
 			} else {
-				print '
+				echo '
 				<section class="slider">	
-				<input type="checkbox" value="switch'.$row['id_switch'].'" id="switch'.$row['id_switch'].'" name="switch'.$row['id_switch'].'" '; if($switchon=="off") {print 'checked';} print ' onChange="this.form.submit()"/>
+				<input type="checkbox" value="switch'.$row['id_switch'].'" id="switch'.$row['id_switch'].'" name="switch'.$row['id_switch'].'" '; if($switchon=="off") {echo 'checked';} echo ' onChange="this.form.submit()"/>
 				<label for="switch'.$row['id_switch'].'"></label>
 				</section>';
 			}
-			print '</td></form></tr>';
+			echo '</td></form></tr>';
 		}
 		echo "</tbody></table>";
 	}
@@ -103,16 +103,16 @@ if($toon_scenes=='yes') {
 		$group = 0;
 		while($row = $result->fetch_assoc()){
 			echo '<table width="100%"><thead><tr><th colspan="2">';
-			if($detailscenes=='optional') {print '<a href="#" onclick="toggle_visibility(\'scene'.$row['id_switch'].'\');" style="text-decoration:none">'.$row['name'].'</a>';} else {print $row['name'];}
-			print '</th>
+			if($detailscenes=='optional') {echo '<a href="#" onclick="toggle_visibility(\'scene'.$row['id_switch'].'\');" style="text-decoration:none">'.$row['name'].'</a>';} else {echo $row['name'];}
+			echo '</th>
 			<th width="50px"><form method="post" action="#"><input type="hidden" name="scene" value="'.$row['id_switch'].'"/><input type="hidden" name="schakelscene" value="on"/><input type="submit" value="AAN" class="abutton gradient"/></form></th>
 			<th width="50px"><form method="post" action="#"><input type="hidden" name="scene" value="'.$row['id_switch'].'"/><input type="hidden" name="schakelscene" value="off"/><input type="submit" value="UIT" class="abutton gradient"/></form></th>
 			</tr></thead>';
 			if(($detailscenes=='yes') || ($detailscenes=='optional')) {
 				if($detailscenes=='optional') {
-					print '<tbody id="scene'.$row['id_switch'].'" style="display:none" class="handje">';
+					echo '<tbody id="scene'.$row['id_switch'].'" style="display:none" class="handje">';
 				} else {
-					print '<tbody>';
+					echo '<tbody>';
 				}
 				$datascene = null;
 				$datascenes = null;
@@ -123,7 +123,7 @@ if($toon_scenes=='yes') {
 					echo "No information available...";
 				} else {
 					foreach($datascenes['response'] as $datascene) {
-						print '<tr><td align="right" width="60px">'.$datascene['type'].'&nbsp;&nbsp;</td><td align="left">&nbsp;'.$datascene['name'].'</td><td>'.$datascene['onstatus'].'</td><td>'.$datascene['offstatus'].'</td></tr>';
+						echo '<tr><td align="right" width="60px">'.$datascene['type'].'&nbsp;&nbsp;</td><td align="left">&nbsp;'.$datascene['name'].'</td><td>'.$datascene['onstatus'].'</td><td>'.$datascene['offstatus'].'</td></tr>';
 					}
 				}
 			}
@@ -152,7 +152,7 @@ if($toon_somfy=='yes') {
 			$tdstyle = '';
 			if($group != $row['volgorde']) $tdstyle = 'style="'.$css_td_newgroup.'"';
 			$group = $row['volgorde'];
-			print '<tr>
+			echo '<tr>
 			<td><img id="somfyIcon" src="images/empty.gif" width="1px" height="1px" /></td>
 			<td align="right" '.$tdstyle.'>
 				<form action="switchhistory.php" method="post" id="'.$row['name'].'">
@@ -191,7 +191,7 @@ if($toon_radiatoren=='yes') {
 			$tdstyle = '';
 			if($group != $row['volgorde']) $tdstyle = 'style="'.$css_td_newgroup.'"';
 			$group = $row['volgorde'];
-			print '<tr>
+			echo '<tr>
 			<td><img id="radiatorIcon" src="images/empty.gif" width="1px" height="1px" /></td>
 			<td align="right" '.$tdstyle.'>
 				<form action="switchhistory.php" method="post" id="'.$row['name'].'">
@@ -420,7 +420,7 @@ if($toon_acties=='yes' && $authenticated == true) {
 				<td align="right" '.$tdstyle.'>'.ucwords(str_replace('_', ' ', ltrim($row['variable'],'actie'))).'</td>
 				<td width="115px" '.$tdstyle.' ><form method="post" action="#"><input type="hidden" name="updactie" value="'.$switchon.'"/><input type="hidden" name="variable" value="'.$row['variable'].'"/>
 				<section class="slider">	
-				<input type="checkbox" value="switch'.$row['variable'].'" id="switch'.$row['variable'].'" name="switch'.$row['variable'].'" '; if($switchon=="off") {print 'checked';} print ' onChange="this.form.submit()"/>
+				<input type="checkbox" value="switch'.$row['variable'].'" id="switch'.$row['variable'].'" name="switch'.$row['variable'].'" '; if($switchon=="off") {echo 'checked';} echo ' onChange="this.form.submit()"/>
 				<label for="switch'.$row['variable'].'"></label>
 				</section>
 				</td></form></tr>';

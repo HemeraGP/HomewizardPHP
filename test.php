@@ -4,13 +4,10 @@
 include "data.php";
 include "functions.php";
 echo '<div class="item wide gradient"><p class="number">2</p><br/>';
-		$json = file_get_contents($jsonurl.'nf/edit/2/1/null/0,1,2/yes');
-		$data = null;
-		$data = json_decode($json,true);
-		if($data['status']=='ok') {
-			setparameter('actie_notify_poort', 'no');
-		}
-		print_r($data);
+		$laatsteschakel = laatsteschakeltijd(14,null, 'm');
+			$laatsteschakel2 = laatsteschakeltijd(15,null, 'm');
+			if($laatsteschakel2['timestamp']>$laatsteschakel['timestamp']) $laatsteschakel['timestamp'] = $laatsteschakel2['timestamp'];
+			if($laatsteschakel['timestamp']>(time()-7200)) $warm=true;
 
 echo '</div>';
 
