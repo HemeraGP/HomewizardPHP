@@ -1,8 +1,6 @@
 <?php
-$laatsteversie = 20150216;
+$laatsteversie = 20150217;
 if($authenticated==true) {
-	
-//BEGIN UPDATE	
 $sql="select versie from versie order by id desc limit 0,1";
 if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 while($row = $result->fetch_assoc()){$versie = $row['versie'];}
@@ -156,6 +154,10 @@ if(isset($_POST['updatedatabasenow'])) {
 	}
 	if($versie<20150216) {
 		$sql="INSERT IGNORE INTO `homewizard`.`statusses` (`status`, `omschrijving`) VALUES ('lightyes', 'Donker'), ('lightno', 'Licht');";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+	}
+	if($versie<20150217) {
+		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('css_h1', 'font-weight:100;font-size:40px;'),('css_h2', 'font-weight:200;font-size:22px;'),('css_h3', 'font-weight:200;font-size:18px;'),('toon_schakelaars2', 'yes')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<$laatsteversie) {

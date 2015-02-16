@@ -41,6 +41,10 @@ echo '
 <style>
 body {'.$css_body.';}
 .item {'.$css_item.';}
+h1 {'.$css_h1.';}
+h2 {'.$css_h2.';}
+h3 {'.$css_h3.';}
+
 </style>';
 ?>
 

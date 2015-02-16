@@ -25,7 +25,7 @@ if($toon_schakelaars=='yes') {
 				<input type="hidden" name="showallswitches" value="yes" />
 				<a href="#" onclick="document.getElementById(\'showallswitches\').submit();" style="text-decoration:none"><h2 >Schakelaars</h2></a>
 			</form>';
-	$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun')";
+	$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun') AND volgorde < 20000";
 	if (!isset($_POST['showallswitches'])) $sql.=" AND favorite like 'yes'";
 	$sql.=" order by volgorde asc, favorite desc, name asc";
 	if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -86,6 +86,74 @@ if($toon_schakelaars=='yes') {
 	}
 	$result->free();
 	echo '<br/><br/></div>';
+	if($toon_schakelaars2=='yes') {
+		$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun') AND volgorde > 19999";
+		if (!isset($_POST['showallswitches2'])) $sql.=" AND favorite like 'yes'";
+		$sql.=" order by volgorde asc, favorite desc, name asc";
+		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
+		if($result->num_rows>0) {
+			$group = 0;
+ 			echo '<div class="item gradient"><p class="number">'.$positie_schakelaars.'</p>
+				<form id="showallswitches2" action="#" method="post">
+					<input type="hidden" name="showallswitches2" value="yes" />
+					<a href="#" onclick="document.getElementById(\'showallswitches2\').submit();" style="text-decoration:none"><h2 >Schakelaars</h2></a>
+				</form>
+			<table align="center"><tbody>';
+			while($row = $result->fetch_assoc()){
+				$switchon = "";
+				$tdstyle = '';
+				if($group != $row['volgorde']) $tdstyle = 'style="'.$css_td_newgroup.'"';
+				$group = $row['volgorde'];
+				if($row['type']!='asun') {if(${'switchstatus'.$row['id_switch']}=="on") {$switchon = "off";} else {$switchon = "on";}}
+				echo '<tr>
+					<td><img id="'.$row['type'].'Icon" src="images/empty.gif" width="1px" height="1px" /></td>
+					<td align="right" '.$tdstyle.'>
+						<form action="switchhistory.php" method="post" id="'.$row['name'].'">
+							<input type="hidden" name="filter" value="'.$row['name'].'">
+							<a href="#" onclick="document.getElementById(\''.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
+						</form>
+					</td>
+					<td width="115px" '.$tdstyle.' ><form method="post" action="#"><input type="hidden" name="switch" value="'.$row['id_switch'].'"/><input type="hidden" name="schakel" value="'.$switchon.'"/>';
+				if($row['type']=='dimmer') {
+					echo '<select name="dimlevel"  class="abutton handje gradient" onChange="this.form.submit()" style="margin-top:4px">
+					<option '.${'switchstatus'.$row['id_switch']}.') selected>'.${'switchstatus'.$row['id_switch']}.'</option>
+					<option>0</option>
+					<option>10</option>
+					<option>20</option>
+					<option>30</option>
+					<option>40</option>
+					<option>50</option>
+					<option>60</option>
+					<option>70</option>
+					<option>80</option>
+					<option>90</option>
+					<option>100</option>
+					</select>';
+				} else if($row['type']=='asun') {
+					echo '
+					<input type="hidden" name="switch" value="'.$row['id_switch'].'"/>
+					<input type="hidden" name="schakel" value="'.$row['id_switch'].'"/>
+					<input type="submit" id="somfydownIcon" name="schakel" value="down" class="abuttonsomfy handje gradient"/>
+					<input type="submit" id="somfyupIcon" name="schakel" value="up" class="abuttonsomfy handje gradient"/>
+				';
+				} else if($row['type']=='virtual') {
+					echo '
+					<form method="post" action="#"><input type="submit" name="schakel" value="on" class="abutton handje gradient"/><input type="submit" name="schakel" value="off" class="abutton handje gradient"/></form>';
+				} else {
+					echo '
+					<section class="slider">	
+					<input type="checkbox" value="switch'.$row['id_switch'].'" id="switch'.$row['id_switch'].'" name="switch'.$row['id_switch'].'" '; if($switchon=="off") {echo 'checked';} echo ' onChange="this.form.submit()"/>
+					<label for="switch'.$row['id_switch'].'"></label>
+					</section>';
+				}
+				echo '</td></form></tr>';
+			}
+			echo "</tbody></table>";
+			$result->free();
+			echo '<br/><br/></div>';
+		}
+	}
+	
 }
 
 /* SCENES */

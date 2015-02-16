@@ -27,7 +27,7 @@ if($actie_brander=='yes') {
 
 if($actie_timer_living=='yes'){
 	$tempw = 20;
-	$tempk = 17;
+	$tempk = 15;
 	$warm=false;
 	if($thermometerte5<$tempw) $voorwarmen = ceil(($tempw-$thermometerte5)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
 	if(in_array(date('N', time()), array(1,2,3,4))) {
@@ -55,17 +55,19 @@ if($actie_timer_living=='yes'){
 }
 
 if($actie_timer_badkamer=='yes'){
-	$tempw = 23;
+	$tempw = 22;
+	$tempn = 18;
 	$tempk = 15;
 	$warm=false;
 	if($thermometerte4<$tempw) $voorwarmen = ceil(($tempw-$thermometerte4)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
-	if(in_array(date('N', time()), array(1,2,3,4,5))) {
-		if((time()>(strtotime('6:00')-$voorwarmen)) && (time()<(strtotime('7:30')))) $warm=true;
-	} else if(in_array(date('N', time()), array(6,7))) {
-		if((time()>(strtotime('7:30')-$voorwarmen)) && (time()<(strtotime('9:30')))) $warm=true;
-	}
+	if(in_array(date('N', time()), array(1,2,3,4,5)) && (time()>(strtotime('6:00')-$voorwarmen)) && (time()<(strtotime('7:30')))) $warm=true;
+	else if(in_array(date('N', time()), array(6,7)) && (time()>(strtotime('7:30')-$voorwarmen)) && (time()<(strtotime('9:30')))) $warm=true;
+	else if(time()>(strtotime('18:00')) && (time()<(strtotime('23:00')))) $lauw=true;
+	
 	if($warm==true) {
 		if($switchstatus6<$tempw) {radiator(6, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
+	} else if($lauw==true) {
+		if($switchstatus6<$tempn) {radiator(6, $tempn, 'c', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus6>$tempk) {
 			$laatsteschakel = laatsteschakeltijd(6,null, 'm');
@@ -96,7 +98,7 @@ if($actie_timer_slaapkamer=='yes'){
 	}
 }
 
-if($actie_timer_slaapkamertobi=='yes'){
+if($actie_timer_slaapkamer_tobi=='yes'){
 	$tempw = 19;
 	$tempk = 5;
 	$warm=false;
@@ -181,14 +183,14 @@ if($actie_thuis=='yes'){
 	if($sensorstatus3=='yes') notificatie($email_notificatie ,'ROOK gedetecteerd in de hall' ,'ROOK gedetecteerd in de hall' );
 	if($sensorstatus4=='yes') notificatie($email_notificatie ,'Bel voordeur ingedrukt' ,'Bel voordeur ingedrukt' );
 	if($actie_notify_poort=='no') {
-		$json = file_get_contents($jsonurl.'nf/edit/1/4/null/0,1,2/yes');
+		$json = file_get_contents($jsonurl.'nf/edit/1/4/null/0,2/yes');
 		$data = null;
 		$data = json_decode($json,true);
 		if($data['status']=='ok') setparameter('actie_notify_poort', 'yes');
 		sleep(2);
 	}
 	if($actie_notify_garage=='no') {
-		$json = file_get_contents($jsonurl.'nf/edit/2/1/null/0,1,2/yes');
+		$json = file_get_contents($jsonurl.'nf/edit/2/1/null/0,2/yes');
 		$data = null;
 		$data = json_decode($json,true);
 		if($data['status']=='ok') setparameter('actie_notify_garage', 'yes');
