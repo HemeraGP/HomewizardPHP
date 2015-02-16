@@ -1,5 +1,5 @@
 <?php
-$laatsteversie = 20150209;
+$laatsteversie = 20150216;
 if($authenticated==true) {
 	
 //BEGIN UPDATE	
@@ -154,6 +154,15 @@ if(isset($_POST['updatedatabasenow'])) {
 		$sql="insert into versie (versie) VALUES ('20150209');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
+	if($versie<20150216) {
+		$sql="INSERT IGNORE INTO `homewizard`.`statusses` (`status`, `omschrijving`) VALUES ('lightyes', 'Donker'), ('lightno', 'Licht');";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+	}
+	if($versie<$laatsteversie) {
+		$sql="insert into versie (versie) VALUES ('$laatsteversie');";
+		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+	}
+	
 }
 
 
