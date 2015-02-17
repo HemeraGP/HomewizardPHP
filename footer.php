@@ -2,7 +2,7 @@
 <div class="footer handje" onclick="window.location='settings.php';">
 <br/>
 <!-- Please do not remove these lines -->
-Get the code at GitHub <a href="https://github.com/Egregius/HomewizardPHP" title="HomewizardPHP"><img src="images/GitHub.png" width="16" height="16"/></a> <a href="https://github.com/Egregius/HomewizardPHP" title="HomewizardPHP">HomewizardPHP</a> <br/><br/>
+Get the code at GitHub <a href="https://github.com/Egregius/HomewizardPHP/wiki" title="HomewizardPHP"><img src="images/GitHub.png" width="16" height="16"/></a> <a href="https://github.com/Egregius/HomewizardPHP/wiki" title="HomewizardPHP">HomewizardPHP</a> <br/><br/>
 Created by <a href="http://egregius.be">egregius.be</a><br/><br/><br/>
 <script type="text/javascript" language="javascript" src="js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" language="javascript" src="js/isotope.pkgd.min.js"></script>

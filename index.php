@@ -290,14 +290,14 @@ if($toon_radiatoren=='yes') {
 					</select>
 				</form>
 			</td>
-			<td width="60px" '.$tdstyle.'>';
+			<td width="60px" '.$tdstyle.' class="temp">';
 			if(!empty($row['temp']) || $row['temp']==0) {
 				echo '<form action="temp.php" method="post" id="temp'.$row['sname'].'">
 						<input type="hidden" name="filter" value="'.$row['sname'].'">
-						<a href="#" onclick="document.getElementById(\'temp'.$row['sname'].'\').submit();" style="text-decoration:none">';
-						if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo '<font color="#880000">';
-						else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo '<font color="#000088">';
-						else echo '<font color="#008800">';
+						<a href="#" onclick="document.getElementById(\'temp'.$row['sname'].'\').submit();" style="text-decoration:none" class="temp">';
+						if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo '<font color="#800">';
+						else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo '<font color="#008">';
+						else echo '<font color="#080">';
 						echo ${'thermometerte'.$row['temp']}.'°C</a>
 					</form>';
 			}
@@ -364,7 +364,7 @@ if($toon_sensoren=='yes') {
 				Default: echo ${'sensorstatus'.$row['id_sensor']};Break;
         	}
 			echo '</td>';
-			if(${'sensorstatus'.$row['id_sensor']} == "yes") {echo '<td style="color:#A00; font-weight:bold">'.${'sensortimestamp'.$row['id_sensor']}.'</td>';} else {echo '<td>'.${'sensortimestamp'.$row['id_sensor']}.'</td>';}
+			if(${'sensorstatus'.$row['id_sensor']} == "yes") {echo '<td style="color:#A00; font-weight:bold"><font size="+0.1">'.${'sensortimestamp'.$row['id_sensor']}.'</font></td>';} else {echo '<td><font size="+0.01">'.${'sensortimestamp'.$row['id_sensor']}.'</font></td>';}
 			echo '</tr>';
 		}
 		echo "</table></div>";
@@ -393,13 +393,13 @@ if($toon_temperatuur=='yes') {
 						<a href="#" onclick="document.getElementById(\'temp'.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
 					</form></td>';} else { echo '<td></td>';}
 			if(${'thermometerte'.$row['id_sensor']} < $row['tempk']) {
-				echo '<td style="color:#00A;">';
+				echo '<td class="blue temp">';
 			} else if(${'thermometerte'.$row['id_sensor']} > $row['tempw']) {
-				echo '<td style="color:#A00;">';
+				echo '<td class="red temp">';
 			} else {
 				echo '<td>';
 			}
-			echo ${'thermometerte'.$row['id_sensor']}.' °C</td>';
+			echo ${'thermometerte'.$row['id_sensor']}.' °C</font></td>';
 			echo '<td>'.${'thermometerhu'.$row['id_sensor']}.' %</td></tr>';
 		}
 		echo "</table></div>";

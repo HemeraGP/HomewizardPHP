@@ -18,7 +18,7 @@ if(!empty($thermometers)) {
 		${'thermometernaam'.$thermometer['id']} = $thermometer['name'];
 	}
 }
-if(isset($_POST['limit'])) { $limit = $_POST['limit']; } else { $limit = 20;}
+if(isset($_POST['limit'])) { $limit = $_POST['limit']; } else { $limit = 24;}
 if(isset($_POST['sensor'])) { $sensor = $_POST['sensor']; $sensornaam = ${'thermometernaam'.$_POST['sensor']};} else { $sensor = 1;}
 if(isset($_POST['filter'])) { 
 	$filter = $_POST['filter'];
@@ -34,15 +34,15 @@ echo '</div><div class="threecolumn"><br/>
 <form method="post" name="filter" id="filter">';
 echo '<select name="limit" class="abutton settings gradient" onChange="this.form.submit()" style="max-width:90px;">';
 echo '<option selected>'.$limit.'</option>';
-echo '<option>20</option>
-<option>50</option>
-<option>100</option>
-<option>500</option>
-<option>1000</option>
-<option>5000</option>
+echo '<option>24</option>
+<option>48</option>
+<option>72</option>
+<option>96</option>
+<option>168</option>
+<option>336</option>
+<option>744</option>
+<option>2000</option>
 <option>10000</option>
-<option>50000</option>
-<option>100000</option>
 </select>';
 if(!empty($thermometers) && $authenticated==true) {
 	echo '<select name="sensor" class="abutton settings gradient" onChange="this.form.submit()" style="max-width:200px;">';
@@ -58,17 +58,12 @@ if(!empty($thermometers) && $authenticated==true) {
 	</select>
 	';
 }
-echo '
-</form>
-<div class="isotope"><div class="item temprain gradient">
+echo '</form>';
+echo '<div class="isotope"><div class="item temprain gradient">
 	<h2>Laatste '.$limit.' uur</h2>
 	<table id="table" align="center"><thead><tr><th>Tijd</th><th>Temp</th><th>Rel Voch</th></tr></thead><tbody>';
-
-
-
 $sql = "SELECT timestamp, te, hu FROM temperature WHERE id_sensor = $sensor ORDER BY timestamp DESC LIMIT 0,$limit";
 if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
-
 while($row = $result->fetch_assoc()){
 	echo '<tr>
 	<td>'.strftime("%a %e %b %H:%M",strtotime($row['timestamp'])).'&nbsp;</td>

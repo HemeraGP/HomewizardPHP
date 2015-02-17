@@ -27,17 +27,14 @@ if($actie_brander=='yes') {
 
 if($actie_timer_living=='yes'){
 	$tempw = 20;
-	$tempk = 15;
+	$tempk = 14;
 	$warm=false;
 	if($thermometerte5<$tempw) $voorwarmen = ceil(($tempw-$thermometerte5)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
-	if(in_array(date('N', time()), array(1,2,3,4))) {
-		if(time()>(strtotime('18:00')-$voorwarmen) && (time()<(strtotime('22:00')))) $warm=true;
-	} else if (in_array(date('N', time()), array(5,6,7))) {
-		if(time()>(strtotime('7:00')-$voorwarmen) && (time()<(strtotime('23:00')))) $warm=true;
-	} else if(time()>(strtotime('8:00')) && (time()<(strtotime('23:00'))) && ($switchstatus14>$tempk || $switchstatus15>$tempk)) {
-		$warm=true;
-	} 
-	if($warm==true) {
+	if(in_array(date('N', time()), array(1,2,3,4)) && time()>=(strtotime('18:00')-$voorwarmen) && time()<=strtotime('22:00')) $warm=true;
+	else if (in_array(date('N', time()), array(5,6,7)) && time()>=(strtotime('7:00')-$voorwarmen) && time()<=strtotime('23:00')) $warm=true;
+	else if(time()>(strtotime('8:00')) && (time()<(strtotime('23:00'))) && ($switchstatus14>$tempk || $switchstatus15>$tempk)) $warm=true;
+
+	if($warm==true && $thermometerte1<=20) {
 		if($switchstatus14<$tempw) {radiator(14, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
 		if($switchstatus14<$tempw) {radiator(15, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
 	} else {
@@ -55,20 +52,21 @@ if($actie_timer_living=='yes'){
 }
 
 if($actie_timer_badkamer=='yes'){
-	$tempw = 22;
-	$tempn = 18;
-	$tempk = 15;
+	$tempw = 21;
+	$tempn = 17;
+	$tempk = 10;
 	$warm=false;
+	$lauw=false;
 	if($thermometerte4<$tempw) $voorwarmen = ceil(($tempw-$thermometerte4)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
-	if(in_array(date('N', time()), array(1,2,3,4,5)) && (time()>(strtotime('6:00')-$voorwarmen)) && (time()<(strtotime('7:30')))) $warm=true;
-	else if(in_array(date('N', time()), array(6,7)) && (time()>(strtotime('7:30')-$voorwarmen)) && (time()<(strtotime('9:30')))) $warm=true;
-	else if(time()>(strtotime('18:00')) && (time()<(strtotime('23:00')))) $lauw=true;
+	if(in_array(date('N', time()), array(1,2,3,4,5)) && time()>=(strtotime('6:00')-$voorwarmen) && time()<=(strtotime('7:30'))) $warm=true;
+	else if(in_array(date('N', time()), array(6,7)) && time()>=(strtotime('7:30')-$voorwarmen) && time()<=(strtotime('9:30'))) $warm=true;
+	else if(time()>strtotime('18:00') && time()<strtotime('23:00')) $lauw=true;
 	
-	if($warm==true) {
+	if($warm==true && $thermometerte1<=21) {
 		if($switchstatus6<$tempw) {radiator(6, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
-	} else if($lauw==true) {
+	} else if($lauw==true && $thermometerte1<18) {
 		if($switchstatus6<$tempn) {radiator(6, $tempn, 'c', $email_notificatie, 'yes');sleep(2);}
-	} else {
+	} else if($warm==false && $lauw==false) {
 		if($switchstatus6>$tempk) {
 			$laatsteschakel = laatsteschakeltijd(6,null, 'm');
 			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(6, $tempk, 'c', $email_notificatie, 'yes');sleep(2);
@@ -78,16 +76,16 @@ if($actie_timer_badkamer=='yes'){
 }
 
 if($actie_timer_slaapkamer=='yes'){
-	$tempw = 19;
+	$tempw = 15;
 	$tempk = 5;
 	$warm=false;
 	if($thermometerte6<$tempw) $voorwarmen = ceil(($tempw-$thermometerte6)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
 	if(in_array(date('N', time()), array(1,2,3,4))) {
-		if((time()>(strtotime('21:00')-$voorwarmen)) && (time()<(strtotime('22:30')))) $warm=true;
+		if((time()>=(strtotime('21:00')-$voorwarmen)) && time()<=(strtotime('22:30'))) $warm=true;
 	} else if(in_array(date('N', time()), array(5,6,7))) {
-		if((time()>(strtotime('22:00')-$voorwarmen)) && (time()<(strtotime('23:30')))) $warm=true;
+		if((time()>=(strtotime('22:00')-$voorwarmen)) && time()<=(strtotime('23:30'))) $warm=true;
 	}
-	if($warm==true) {
+	if($warm==true && $thermometerte1<=13) {
 		if($switchstatus7<$tempw) {radiator(7, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus7>$tempk) {
@@ -99,20 +97,20 @@ if($actie_timer_slaapkamer=='yes'){
 }
 
 if($actie_timer_slaapkamer_tobi=='yes'){
-	$tempw = 19;
+	$tempw = 15;
 	$tempk = 5;
 	$warm=false;
 	if($thermometerte7<$tempw) $voorwarmen = ceil(($tempw-$thermometerte7)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
 	if(date('W', time()) %2 == 0) {
 		if(in_array(date('N', time()), array(3,4,5,6))) {
-			if((time()>(strtotime('20:30')-$voorwarmen)) && (time()<(strtotime('21:30')))) $warm=true;
+			if((time()>=(strtotime('20:30')-$voorwarmen)) && time()<=(strtotime('21:30'))) $warm=true;
 		}
 	} else {
 		if(in_array(date('N', time()), array(3,4))) {
-			if((time()>(strtotime('20:30')-$voorwarmen)) && (time()<(strtotime('21:30')))) $warm=true;
+			if((time()>=(strtotime('20:30')-$voorwarmen)) && time()<=(strtotime('21:30'))) $warm=true;
 		}
 	}
-	if($warm==true) {
+	if($warm==true && $thermometerte1<=13) {
 		if($switchstatus8<$tempw) {radiator(8, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus8>$tempk) {
@@ -138,7 +136,7 @@ if($actie_lichtgarage=='yes') {
 
 if($actie_timer_pluto=='yes'){
 	$pluto=false;
-	if((time()>(strtotime('11:00'))) && (time()<(strtotime('23:00')))) $pluto=true;
+	if(time()>=(strtotime('11:00')) && time()<=(strtotime('23:00'))) $pluto=true;
 	if($pluto==true) {
 		if($switchstatus0=='off') {schakel(0, 'on', 'c', $email_notificatie, 'yes');sleep(2);}
 	} else {

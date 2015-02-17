@@ -1,5 +1,5 @@
 <?php
-$laatsteversie = 20150217;
+$laatsteversie = 20150218;
 if($authenticated==true) {
 $sql="select versie from versie order by id desc limit 0,1";
 if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
@@ -160,15 +160,26 @@ if(isset($_POST['updatedatabasenow'])) {
 		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('css_h1', 'font-weight:100;font-size:40px;'),('css_h2', 'font-weight:200;font-size:22px;'),('css_h3', 'font-weight:200;font-size:18px;'),('toon_schakelaars2', 'yes')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
+	if($versie<20150218) {
+		$sql="ALTER TABLE `settings` ADD `user` VARCHAR(255) NOT NULL DEFAULT 'default' , ADD INDEX (`user`) ;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+		$sql="ALTER TABLE `settings` DROP PRIMARY KEY;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+		$sql="ALTER TABLE `settings` ADD PRIMARY KEY (`variable`,`user`);";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+		$sql="CREATE TABLE `users` (`id` int(11) NOT NULL AUTO_INCREMENT,`username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,`password` char(64) COLLATE utf8_unicode_ci NOT NULL,`salt` char(16) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),UNIQUE KEY `username` (`username`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+		$sql="INSERT INTO `homewizard`.`users` (`id`, `username`, `password`, `salt`) VALUES (NULL, 'default', 'd163f5224671873ede0d1441e51a12371f70e4e9cee5778dca2a6d97e59695f2', '2ea0cfc25e61d274');";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
+		
+	}
 	if($versie<$laatsteversie) {
 		$sql="insert into versie (versie) VALUES ('$laatsteversie');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	
 }
-
-
-
 
 
 $sql="select versie from versie order by id desc limit 0,1";
@@ -178,6 +189,5 @@ while($row = $result->fetch_assoc()){$versie = $row['versie'];}
 echo '<br/>Huidige versie database: '.$versie.'<br/><br>
 Geïnstalleerde versie HomewizardPHP: '.$laatsteversie.'<br/><br/>';
 if($versie<$laatsteversie) echo '<form method="post"><input type="hidden" name="updatedatabase" value="Update Database" class="abutton settings gradient"/><input type="submit" name="updatedatabasenow" value="Update Database" class="abutton settings"/></form>';
-//EINDE UPDATE
 }
 ?>
