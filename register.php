@@ -1,6 +1,10 @@
 <?php
 require("common.php");
-if(!empty($_POST))
+if(!isset($gebruiker)) {
+	header("Location: index.php");
+	die("Redirecting to index.php"); 
+} else {
+if(!empty($_POST['username']))
     {
         if(empty($_POST['username']))
         {
@@ -14,7 +18,7 @@ if(!empty($_POST))
         $query_params = array(':username' => $_POST['username']);
         try
         {
-            $stmt = $db->prepare($query);
+            $stmt = $dbpdo->prepare($query);
             $result = $stmt->execute($query_params);
         }
         catch(PDOException $ex)
@@ -24,7 +28,7 @@ if(!empty($_POST))
         $row = $stmt->fetch();
         if($row)
         {
-            die("This username is already in use");
+            echo("<font size='+1'><br/><font color=\"#FF0000\">Deze gebruikersnaam bestaat al.</font></font>");
         }
         
        $query = "INSERT INTO users (username,password,salt) VALUES (:username,:password,:salt)";
@@ -42,25 +46,28 @@ if(!empty($_POST))
         
         try
         {
-            $stmt = $db->prepare($query);
+            $stmt = $dbpdo->prepare($query);
             $result = $stmt->execute($query_params);
         }
         catch(PDOException $ex)
         {
             //die("Failed to run query: " . $ex->getMessage());
         }
-        header("Location: login.php");
-        die("Redirecting to login.php");
+        //header("Location: settings.php");
+        //die("Redirecting to settings.php");
     }
     
 ?>
-<h1>Register</h1>
-<form action="register.php" method="post">
-    Username:<br />
+<h2>Registreer nieuwe gebruiker</h2>
+<form action="#" method="post">
+    Gebruikersnaam:<br />
     <input type="text" name="username" value="" />
     <br /><br />
-    Password:<br />
+    Wactwoord:<br />
     <input type="password" name="password" value="" />
     <br /><br />
+	<input type="hidden" name="gebruikers" value="Gebruikers" class="abutton settings gradient"/>
     <input type="submit" value="Register" />
 </form>
+<?php
+}

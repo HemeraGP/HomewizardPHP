@@ -1,5 +1,7 @@
  <?php
 require("common.php");
 unset($_SESSION['user']);
-header("Location: login.php");
-die("Redirecting to: login.php"); 
+unset($_COOKIE['HomewizardPHP']);
+setcookie("HomewizardPHP", null, time()-1);
+header("Location: index.php");
+die("Redirecting to: index.php"); 

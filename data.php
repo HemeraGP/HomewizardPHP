@@ -1,12 +1,9 @@
 <?php
-if($authenticated == true && $developermode != 'yes') { 
-	$json = file_get_contents($jsonurl.'get-status');
-} else if ($developermode == 'yes') {
+if ($developermode == 'yes') {
 	print '<div class="error gradient">Developer mode</div>';
 	$json = $developerjson;
 } else {
-	print '<div class="error gradient">Demo mode, no actual data shown.</div>';
-	$json = $developerjson;
+	$json = file_get_contents($jsonurl.'get-status');
 }
 $data = null;
 $data = json_decode($json,true);

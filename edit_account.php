@@ -1,11 +1,11 @@
 <?php
 require("common.php");
-if(empty($_SESSION['user']))
-    {
-       header("Location: login.php");
-       die("Redirecting to login.php");
-    }
-    if(!empty($_POST))
+if(!isset($gebruiker)) {
+	header("Location: index.php");
+	die("Redirecting to index.php"); 
+} else {
+
+    if(!empty($_POST['password']))
     {
         if(!empty($_POST['password']))
         {
@@ -22,7 +22,7 @@ if(empty($_SESSION['user']))
             $salt = null;
         }
         $query_params = array(
-            ':user_id' => $_SESSION['user']['id'],
+            ':username' => $_COOKIE["HomewizardPHP"],
         );
         if($password !== null)
         {
@@ -43,32 +43,33 @@ if(empty($_SESSION['user']))
         }
         $query .= "
             WHERE
-                id = :user_id
+                username LIKE :username
         ";
         
         try
         {
-            $stmt = $db->prepare($query);
+            $stmt = $dbpdo->prepare($query);
             $result = $stmt->execute($query_params);
         }
         catch(PDOException $ex)
         {
-            die("Failed to run query: " . $ex->getMessage());
+            echo("Failed to run query: " . $ex->getMessage());
         }
-        header("Location: private.php");
-        die("Redirecting to private.php");
-    }
-    
+    } 
+
 ?>
-<h1>Edit Account</h1>
-<form action="edit_account.php" method="post">
-    Username:<br />
-    <b><?php echo htmlentities($_SESSION['user']['username'], ENT_QUOTES, 'UTF-8'); ?></b>
+<h2>Wijzig wachtwoord</h2>
+<form action="#" method="post">
+    Gebruikersnaam:<br /><br/>
+    <b><font size="+1"><?php echo htmlentities($_COOKIE["HomewizardPHP"], ENT_QUOTES, 'UTF-8'); ?></font></b>
     
     <br /><br />
-    Password:<br />
+    Wachtwoord:<br />
     <input type="password" name="password" value="" /><br />
-    <i>(leave blank if you do not want to change your password)</i>
+    
     <br /><br />
-    <input type="submit" value="Update Account" />
+    <input type="hidden" name="gebruikers" value="Gebruikers"/>
+    <input type="submit" value="Update gebruiker" />
 </form>
+<?php
+}

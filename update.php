@@ -11,63 +11,63 @@ if(isset($_POST['updatedatabasenow'])) {
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150110) {
-		$sql="ALTER TABLE `switches` CHANGE `volgorde` `volgorde` SMALLINT(6) DEFAULT null;";
+		$sql="ALTER TABLE switches CHANGE volgorde volgorde SMALLINT(6) DEFAULT null;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150110');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150111) {
-		$sql="ALTER TABLE `temperature` ADD `id_sensor` INT DEFAULT NULL ;";
+		$sql="ALTER TABLE temperature ADD id_sensor INT DEFAULT NULL ;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `temperature` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE temperature DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `temperature` ADD PRIMARY KEY (`timestamp`,`id_sensor`);";
+		$sql="ALTER TABLE temperature ADD PRIMARY KEY (timestamp,id_sensor);";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `temp_day` ADD `id_sensor` INT DEFAULT NULL ;";
+		$sql="ALTER TABLE temp_day ADD id_sensor INT DEFAULT NULL ;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `temp_day` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE temp_day DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `temp_day` ADD PRIMARY KEY (`date`,`id_sensor`);";
+		$sql="ALTER TABLE temp_day ADD PRIMARY KEY (date,id_sensor);";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `rain` ADD `id_sensor` INT DEFAULT NULL ;";
+		$sql="ALTER TABLE rain ADD id_sensor INT DEFAULT NULL ;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `rain` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE rain DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `rain` ADD PRIMARY KEY (`date`,`id_sensor`);";
+		$sql="ALTER TABLE rain ADD PRIMARY KEY (date,id_sensor);";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `wind` ADD `id_sensor` INT DEFAULT NULL ;";
+		$sql="ALTER TABLE wind ADD id_sensor INT DEFAULT NULL ;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `wind` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE wind DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `wind` ADD PRIMARY KEY (`timestamp`,`id_sensor`);";
+		$sql="ALTER TABLE wind ADD PRIMARY KEY (timestamp,id_sensor);";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `wind_day` ADD `id_sensor` INT DEFAULT NULL ;";
+		$sql="ALTER TABLE wind_day ADD id_sensor INT DEFAULT NULL ;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `wind_day` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE wind_day DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
-		$sql="ALTER TABLE `wind_day` ADD PRIMARY KEY (`date`,`id_sensor`);";
+		$sql="ALTER TABLE wind_day ADD PRIMARY KEY (date,id_sensor);";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
 		$sql="insert into versie (versie) VALUES ('20150111');";
 		if(!$result = $db->query($sql)){ echo 'There was an error running the query ['.$sql.'][' . $db->error . ']<hr>';}
 	}
 	if($versie<20150113) {
-		$sql="ALTER TABLE `settings` CHANGE `value` `value` VARCHAR(10000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;";
+		$sql="ALTER TABLE settings CHANGE value value VARCHAR(10000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="INSERT INTO `homewizard`.`settings` (`variable`, `value`) VALUES ('developermode', 'no'), ('developerjson', '{\"status\": \"ok\", \"version\": \"2.81\", \"request\": {\"route\": \"/get-sensors\" }, \"response\": {\"switches\" : [{\"id\":0,\"name\":\"Kerstboom\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"no\"},{\"id\":1,\"name\":\"Licht Garage\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"no\"},{\"id\":2,\"name\":\"Bureel Tobi\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"no\"},{\"id\":3,\"name\":\"Lamp Bureel\",\"type\":\"switch\",\"status\":\"on\",\"favorite\":\"no\"},{\"id\":4,\"name\":\"TV\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"yes\"},{\"id\":5,\"name\":\"Radio\",\"type\":\"switch\",\"status\":\"on\",\"favorite\":\"yes\"},{\"id\":6,\"name\":\"Badkamer\",\"type\":\"radiator\",\"tte\":15.0,\"favorite\":\"no\"},{\"id\":7,\"name\":\"Slaapkamer\",\"type\":\"radiator\",\"tte\":15.0,\"favorite\":\"no\"},{\"id\":8,\"name\":\"Slaapkamer Tobi\",\"type\":\"radiator\",\"tte\":15.0,\"favorite\":\"no\"},{\"id\":9,\"name\":\"Diskstation\",\"type\":\"virtual\",\"status\":\"on\",\"favorite\":\"no\"},{\"id\":10,\"name\":\"Living\",\"type\":\"dimmer\",\"status\":\"off\",\"dimlevel\":0,\"favorite\":\"no\"},{\"id\":11,\"name\":\"Salon\",\"type\":\"dimmer\",\"status\":\"off\",\"dimlevel\":0,\"favorite\":\"no\"}],\"uvmeters\":[],\"windmeters\":[{\"id\":2,\"name\":\"Windmeter\",\"code\":\"10321553\",\"model\":1,\"lowBattery\":\"no\",\"version\":2.19,\"unit\":0,\"favorite\":\"no\"}],\"rainmeters\":[{\"id\":3,\"name\":\"Regenmeter\",\"code\":\"4091779\",\"model\":1,\"lowBattery\":\"no\",\"version\":2.19,\"mm\":15.4,\"3h\":0.0,\"favorite\":\"no\"}],\"thermometers\":[{\"id\":1,\"name\":\"Buiten\",\"code\":\"13666960\",\"model\":1,\"lowBattery\":\"no\",\"version\":2.19,\"te\":9.7,\"hu\":83,\"te+\":10.5,\"te+t\":\"01:36\",\"te-\":9.0,\"te-t\":\"09:56\",\"hu+\":90,\"hu+t\":\"07:04\",\"hu-\":82,\"hu-t\":\"01:45\",\"outside\":\"yes\",\"favorite\":\"no\"}],\"weatherdisplays\":[{\"id\":0,\"name\":\"Weerstation\",\"code\":\"11657828\",\"model\":1,\"version\":2.20,\"favorite\":\"no\"}], \"energymeters\": [], \"energylinks\": [], \"heatlinks\": [], \"hues\": [], \"scenes\": [{\"id\": 0, \"name\": \"Alles\", \"favorite\": \"yes\"}], \"kakusensors\": [{\"id\":0,\"name\":\"Zolder\",\"status\":null,\"type\":\"smoke\",\"favorite\":\"no\",\"timestamp\":\"00:00\",\"cameraid\":null},{\"id\":1,\"name\":\"Poort\",\"status\":\"no\",\"type\":\"contact\",\"favorite\":\"no\",\"timestamp\":\"11:25\",\"cameraid\":null},{\"id\":2,\"name\":\"Garage\",\"status\":\"no\",\"type\":\"motion\",\"favorite\":\"no\",\"timestamp\":\"15:27\",\"cameraid\":null},{\"id\":3,\"name\":\"Hal boven\",\"status\":null,\"type\":\"smoke\",\"favorite\":\"no\",\"timestamp\":\"00:00\",\"cameraid\":null},{\"id\":4,\"name\":\"Deurbel\",\"status\":null,\"type\":\"doorbell\",\"favorite\":\"no\",\"timestamp\":\"00:00\",\"cameraid\":null}], \"cameras\": []}}');";
+		$sql="INSERT INTO settings (variable, value) VALUES ('developermode', 'no'), ('developerjson', '{\"status\": \"ok\", \"version\": \"2.81\", \"request\": {\"route\": \"/get-sensors\" }, \"response\": {\"switches\" : [{\"id\":0,\"name\":\"Kerstboom\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"no\"},{\"id\":1,\"name\":\"Licht Garage\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"no\"},{\"id\":2,\"name\":\"Bureel Tobi\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"no\"},{\"id\":3,\"name\":\"Lamp Bureel\",\"type\":\"switch\",\"status\":\"on\",\"favorite\":\"no\"},{\"id\":4,\"name\":\"TV\",\"type\":\"switch\",\"status\":\"off\",\"favorite\":\"yes\"},{\"id\":5,\"name\":\"Radio\",\"type\":\"switch\",\"status\":\"on\",\"favorite\":\"yes\"},{\"id\":6,\"name\":\"Badkamer\",\"type\":\"radiator\",\"tte\":15.0,\"favorite\":\"no\"},{\"id\":7,\"name\":\"Slaapkamer\",\"type\":\"radiator\",\"tte\":15.0,\"favorite\":\"no\"},{\"id\":8,\"name\":\"Slaapkamer Tobi\",\"type\":\"radiator\",\"tte\":15.0,\"favorite\":\"no\"},{\"id\":9,\"name\":\"Diskstation\",\"type\":\"virtual\",\"status\":\"on\",\"favorite\":\"no\"},{\"id\":10,\"name\":\"Living\",\"type\":\"dimmer\",\"status\":\"off\",\"dimlevel\":0,\"favorite\":\"no\"},{\"id\":11,\"name\":\"Salon\",\"type\":\"dimmer\",\"status\":\"off\",\"dimlevel\":0,\"favorite\":\"no\"}],\"uvmeters\":[],\"windmeters\":[{\"id\":2,\"name\":\"Windmeter\",\"code\":\"10321553\",\"model\":1,\"lowBattery\":\"no\",\"version\":2.19,\"unit\":0,\"favorite\":\"no\"}],\"rainmeters\":[{\"id\":3,\"name\":\"Regenmeter\",\"code\":\"4091779\",\"model\":1,\"lowBattery\":\"no\",\"version\":2.19,\"mm\":15.4,\"3h\":0.0,\"favorite\":\"no\"}],\"thermometers\":[{\"id\":1,\"name\":\"Buiten\",\"code\":\"13666960\",\"model\":1,\"lowBattery\":\"no\",\"version\":2.19,\"te\":9.7,\"hu\":83,\"te+\":10.5,\"te+t\":\"01:36\",\"te-\":9.0,\"te-t\":\"09:56\",\"hu+\":90,\"hu+t\":\"07:04\",\"hu-\":82,\"hu-t\":\"01:45\",\"outside\":\"yes\",\"favorite\":\"no\"}],\"weatherdisplays\":[{\"id\":0,\"name\":\"Weerstation\",\"code\":\"11657828\",\"model\":1,\"version\":2.20,\"favorite\":\"no\"}], \"energymeters\": [], \"energylinks\": [], \"heatlinks\": [], \"hues\": [], \"scenes\": [{\"id\": 0, \"name\": \"Alles\", \"favorite\": \"yes\"}], \"kakusensors\": [{\"id\":0,\"name\":\"Zolder\",\"status\":null,\"type\":\"smoke\",\"favorite\":\"no\",\"timestamp\":\"00:00\",\"cameraid\":null},{\"id\":1,\"name\":\"Poort\",\"status\":\"no\",\"type\":\"contact\",\"favorite\":\"no\",\"timestamp\":\"11:25\",\"cameraid\":null},{\"id\":2,\"name\":\"Garage\",\"status\":\"no\",\"type\":\"motion\",\"favorite\":\"no\",\"timestamp\":\"15:27\",\"cameraid\":null},{\"id\":3,\"name\":\"Hal boven\",\"status\":null,\"type\":\"smoke\",\"favorite\":\"no\",\"timestamp\":\"00:00\",\"cameraid\":null},{\"id\":4,\"name\":\"Deurbel\",\"status\":null,\"type\":\"doorbell\",\"favorite\":\"no\",\"timestamp\":\"00:00\",\"cameraid\":null}], \"cameras\": []}}');";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150113');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150116) {
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('positie_radiatoren', '3'),('positie_regen', '8'),('positie_scenes', '2'),('positie_schakelaars', '1'),('positie_sensoren', '4'),('positie_somfy', '1'),('positie_temperatuur', '6'),('positie_wind', '9'),('refreshinterval', '60');";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('positie_radiatoren', '3'),('positie_regen', '8'),('positie_scenes', '2'),('positie_schakelaars', '1'),('positie_sensoren', '4'),('positie_somfy', '1'),('positie_temperatuur', '6'),('positie_wind', '9'),('refreshinterval', '60');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150116');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150126) {
-		$sql="INSERT IGNORE INTO settings (`variable`, `value`) VALUES ('positie_energylink', '7');";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('positie_energylink', '7');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="CREATE TABLE IF NOT EXISTS `energylink` (`timestamp` timestamp NOT NULL,`netto` float NOT NULL,`S1` float NOT NULL,`S2` float NOT NULL,`gas` float NOT NULL,`verbruik` float NOT NULL,) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+		$sql="CREATE TABLE IF NOT EXISTS energylink (timestamp timestamp NOT NULL,netto float NOT NULL,S1 float NOT NULL,S2 float NOT NULL,gas float NOT NULL,verbruik float NOT NULL,) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="ALTER TABLE energylink ADD PRIMARY KEY (timestamp);";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
@@ -75,47 +75,47 @@ if(isset($_POST['updatedatabasenow'])) {
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150128) { 
-		$sql="INSERT IGNORE INTO settings (`variable`, `value`) VALUES ('defaultthermometer', '1');";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('defaultthermometer', '1');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `sensors` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE sensors DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `sensors` ADD PRIMARY KEY (`id_sensor`,`type`);";
+		$sql="ALTER TABLE sensors ADD PRIMARY KEY (id_sensor,type);";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `switches` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE switches DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `switches` ADD PRIMARY KEY (`id_switch`,`type`);";
+		$sql="ALTER TABLE switches ADD PRIMARY KEY (id_switch,type);";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="CREATE TABLE IF NOT EXISTS switchhistory (`id_switch` smallint(6) NOT NULL, `timestamp` int(11) NOT NULL,`type` varchar(50) COLLATE utf8_unicode_ci NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+		$sql="CREATE TABLE IF NOT EXISTS switchhistory (id_switch smallint(6) NOT NULL, timestamp int(11) NOT NULL,type varchar(50) COLLATE utf8_unicode_ci NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150128');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150129) {
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('toon_radiatoren', 'yes'),('toon_regen', 'yes'),('toon_scenes', 'yes'),('toon_schakelaars', 'yes'),('toon_sensoren', 'yes'),('toon_somfy', 'yes'),('toon_temperatuur', 'yes'),('toon_wind', 'yes'),('toon_energylink', 'yes');";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('toon_radiatoren', 'yes'),('toon_regen', 'yes'),('toon_scenes', 'yes'),('toon_schakelaars', 'yes'),('toon_sensoren', 'yes'),('toon_somfy', 'yes'),('toon_temperatuur', 'yes'),('toon_wind', 'yes'),('toon_energylink', 'yes');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150129');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150130) {
-		$sql="ALTER TABLE `switchhistory` ADD `who` VARCHAR(20) NOT NULL DEFAULT 'man';";
+		$sql="ALTER TABLE switchhistory ADD who VARCHAR(20) NOT NULL DEFAULT 'man';";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150130');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150131) {
-		$sql="ALTER TABLE `switches` ADD `temp` SMALLINT NULL ;";
+		$sql="ALTER TABLE switches ADD temp SMALLINT NULL ;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150131');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150201) {
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('css_td_newgroup', 'border-top:1px solid black; padding-top:10px;')";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('css_td_newgroup', 'border-top:1px solid black; padding-top:10px;')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150201');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150204) {
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('temp_correctie0', '0'),('temp_correctie1', '0'),('temp_correctie2', '0'),('temp_correctie3', '0'),('temp_correctie4', '0'),('temp_correctie5', '0'),('temp_correctie6', '0'),('temp_correctie7', '0'),('temp_correctie8', '0'),('temp_correctie9', '0'),('temp_correctie10', '0')";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('temp_correctie0', '0'),('temp_correctie1', '0'),('temp_correctie2', '0'),('temp_correctie3', '0'),('temp_correctie4', '0'),('temp_correctie5', '0'),('temp_correctie6', '0'),('temp_correctie7', '0'),('temp_correctie8', '0'),('temp_correctie9', '0'),('temp_correctie10', '0')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150204');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
@@ -123,54 +123,52 @@ if(isset($_POST['updatedatabasenow'])) {
 	if($versie<20150207) {
 		$sql="DELETE FROM settings WHERE variable like 'temp_correctie%'";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `sensors` ADD `tempk` FLOAT NOT NULL DEFAULT '0' ;";
+		$sql="ALTER TABLE sensors ADD tempk FLOAT NOT NULL DEFAULT '0' ;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `sensors` ADD `tempw` FLOAT NOT NULL DEFAULT '22' ;";
+		$sql="ALTER TABLE sensors ADD tempw FLOAT NOT NULL DEFAULT '22' ;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `sensors` ADD `correctie` FLOAT NOT NULL DEFAULT '0' ;";
+		$sql="ALTER TABLE sensors ADD correctie FLOAT NOT NULL DEFAULT '0' ;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('css_body', ''),('css_item', '')";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('css_body', ''),('css_item', '')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150207');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150208) {
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('email_from', 'guy@egregius.be'),('email_notificatie', 'guy@egregius.be')";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('email_from', 'guy@egregius.be'),('email_notificatie', 'guy@egregius.be')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150208');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150209) {
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('toon_acties', 'yes'),('positie_acties', '9')";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('toon_acties', 'yes'),('positie_acties', '9')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `settings` ADD `favorite` VARCHAR(20) DEFAULT null;";
+		$sql="ALTER TABLE settings ADD favorite VARCHAR(20) DEFAULT null;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="CREATE TABLE IF NOT EXISTS `cronhistory` (`cron` varchar(200) COLLATE utf8_unicode_ci NOT NULL,`timestamp` int(10) NOT NULL,`actie` varchar(200) COLLATE utf8_unicode_ci NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `cronhistory` ADD PRIMARY KEY (`cron`,`timestamp`);";
+		$sql="CREATE TABLE IF NOT EXISTS cronhistory (cron varchar(200) COLLATE utf8_unicode_ci NOT NULL,timestamp int(10) NOT NULL,actie varchar(200) COLLATE utf8_unicode_ci NOT NULL, PRIMARY KEY (cron,timestamp)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="insert into versie (versie) VALUES ('20150209');";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150216) {
-		$sql="INSERT IGNORE INTO `homewizard`.`statusses` (`status`, `omschrijving`) VALUES ('lightyes', 'Donker'), ('lightno', 'Licht');";
+		$sql="INSERT IGNORE INTO statusses (status, omschrijving) VALUES ('lightyes', 'Donker'), ('lightno', 'Licht');";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150217) {
-		$sql="INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES ('css_h1', 'font-weight:100;font-size:40px;'),('css_h2', 'font-weight:200;font-size:22px;'),('css_h3', 'font-weight:200;font-size:18px;'),('toon_schakelaars2', 'yes')";
+		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('css_h1', 'font-weight:100;font-size:40px;'),('css_h2', 'font-weight:200;font-size:22px;'),('css_h3', 'font-weight:200;font-size:18px;'),('toon_schakelaars2', 'yes')";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 	}
 	if($versie<20150218) {
-		$sql="ALTER TABLE `settings` ADD `user` VARCHAR(255) NOT NULL DEFAULT 'default' , ADD INDEX (`user`) ;";
+		$sql="ALTER TABLE settings ADD user VARCHAR(255) NOT NULL DEFAULT 'default' , ADD INDEX (user) ;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `settings` DROP PRIMARY KEY;";
+		$sql="ALTER TABLE settings DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="ALTER TABLE `settings` ADD PRIMARY KEY (`variable`,`user`);";
+		$sql="ALTER TABLE settings ADD PRIMARY KEY (variable,user);";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="CREATE TABLE `users` (`id` int(11) NOT NULL AUTO_INCREMENT,`username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,`password` char(64) COLLATE utf8_unicode_ci NOT NULL,`salt` char(16) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),UNIQUE KEY `username` (`username`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
+		$sql="CREATE TABLE users (id int(11) NOT NULL AUTO_INCREMENT,username varchar(255) COLLATE utf8_unicode_ci NOT NULL,password char(64) COLLATE utf8_unicode_ci NOT NULL,salt char(16) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (id),UNIQUE KEY username (username)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="INSERT INTO `homewizard`.`users` (`id`, `username`, `password`, `salt`) VALUES (NULL, 'default', 'd163f5224671873ede0d1441e51a12371f70e4e9cee5778dca2a6d97e59695f2', '2ea0cfc25e61d274');";
+		$sql="INSERT INTO users (id, username, password, salt) VALUES (NULL, 'default', 'd163f5224671873ede0d1441e51a12371f70e4e9cee5778dca2a6d97e59695f2', '2ea0cfc25e61d274');";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		
 	}
