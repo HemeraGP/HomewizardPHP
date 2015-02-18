@@ -1,6 +1,6 @@
 <?php
-$username = "homewizard";
-$password = "home!wizard";
+$username = "username";
+$password = "password";
 $host = "localhost";
 $dbname = "homewizard";
 $db = new mysqli($host, $username, $password, $dbname);

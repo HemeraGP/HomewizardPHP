@@ -1,5 +1,5 @@
 <?php
-$laatsteversie = 20150218;
+$laatsteversie = 20150219;
 if($authenticated==true) {
 $sql="select versie from versie order by id desc limit 0,1";
 if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
@@ -168,7 +168,7 @@ if(isset($_POST['updatedatabasenow'])) {
 		$sql="CREATE TABLE users (id int(11) NOT NULL AUTO_INCREMENT,username varchar(255) COLLATE utf8_unicode_ci NOT NULL,password char(64) COLLATE utf8_unicode_ci NOT NULL,salt char(16) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),UNIQUE KEY username (username)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
-		$sql="INSERT INTO users (id, username, password, salt) VALUES (NULL, 'default', 'd163f5224671873ede0d1441e51a12371f70e4e9cee5778dca2a6d97e59695f2', '2ea0cfc25e61d274');";
+		$sql="INSERT IGNORE INTO users (id, username, password, salt) VALUES (NULL, 'default', '1be8bc8019a469136fc1c1f4761ee82d09b8faabc3bdb6f5b48876bf6f8c2613', '3a2043a64fba5959');";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		
 	}
