@@ -1,19 +1,35 @@
 CREATE DATABASE IF NOT EXISTS `homewizard` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `homewizard`;
 
-CREATE TABLE IF NOT EXISTS `energylink` (
+CREATE TABLE IF NOT EXISTS `cronhistory` (
+  `cron` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp` int(10) NOT NULL,
+  `actie` varchar(200) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `cronhistory`
+ ADD PRIMARY KEY (`cron`,`timestamp`);
+ 
+ CREATE TABLE IF NOT EXISTS `energylink` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `netto` float NOT NULL,
   `S1` float NOT NULL,
   `S2` float NOT NULL,
-  `gas` float NOT NULL
+  `gas` float NOT NULL,
+  `verbruik` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `energylink`
+ ADD PRIMARY KEY (`timestamp`);
+ 
 CREATE TABLE IF NOT EXISTS `history` (
   `id_sensor` smallint(6) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `history`
+ ADD PRIMARY KEY (`id_sensor`,`time`);
 
 CREATE TABLE IF NOT EXISTS `rain` (
   `date` char(10) NOT NULL,
@@ -21,36 +37,60 @@ CREATE TABLE IF NOT EXISTS `rain` (
   `id_sensor` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `rain`
+ ADD PRIMARY KEY (`date`,`id_sensor`);
+
 CREATE TABLE IF NOT EXISTS `sensors` (
   `id_sensor` smallint(6) NOT NULL,
   `volgorde` smallint(6) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
-  `favorite` varchar(3) NOT NULL
+  `favorite` varchar(3) NOT NULL,
+  `tempk` float NOT NULL DEFAULT '0',
+  `tempw` float NOT NULL DEFAULT '22',
+  `correctie` float NOT NULL DEFAULT '0',
+  `ttt` float NOT NULL DEFAULT '15'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `sensors`
+ ADD PRIMARY KEY (`id_sensor`,`type`);
 
 CREATE TABLE IF NOT EXISTS `settings` (
   `variable` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `value` varchar(10000) COLLATE utf8_unicode_ci NOT NULL
+  `value` varchar(10000) COLLATE utf8_unicode_ci NOT NULL,
+  `favorite` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `settings`
+ ADD PRIMARY KEY (`variable`,`user`), ADD KEY `user` (`user`);
 
 CREATE TABLE IF NOT EXISTS `statusses` (
   `status` varchar(200) NOT NULL,
   `omschrijving` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `statusses`
+ ADD PRIMARY KEY (`status`);
+ 
 CREATE TABLE IF NOT EXISTS `switches` (
   `id_switch` smallint(6) NOT NULL,
   `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `favorite` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
-  `volgorde` smallint(6) DEFAULT NULL
+  `volgorde` smallint(6) DEFAULT NULL,
+  `temp` smallint(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+ALTER TABLE `switches`
+ ADD PRIMARY KEY (`id_switch`,`type`);
+ 
 CREATE TABLE IF NOT EXISTS `switchhistory` (
   `id_switch` smallint(6) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `who` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'm'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `temperature` (
@@ -60,6 +100,9 @@ CREATE TABLE IF NOT EXISTS `temperature` (
   `id_sensor` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `temperature`
+ ADD PRIMARY KEY (`timestamp`,`id_sensor`);
+
 CREATE TABLE IF NOT EXISTS `temp_day` (
   `date` char(10) NOT NULL,
   `min` float NOT NULL,
@@ -67,12 +110,35 @@ CREATE TABLE IF NOT EXISTS `temp_day` (
   `id_sensor` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+ALTER TABLE `temp_day`
+ ADD PRIMARY KEY (`date`,`id_sensor`);
+
+CREATE TABLE IF NOT EXISTS `users` (
+`id` int(11) NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` char(64) COLLATE utf8_unicode_ci NOT NULL,
+  `salt` char(16) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `users`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`);
+
+ALTER TABLE `users`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1; 
+ 
 CREATE TABLE IF NOT EXISTS `versie` (
 `id` int(11) NOT NULL,
   `versie` int(11) NOT NULL,
   `datumupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE `versie`
+ ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `versie`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1; 
+ 
 CREATE TABLE IF NOT EXISTS `wind` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `wi` float NOT NULL,
@@ -81,56 +147,31 @@ CREATE TABLE IF NOT EXISTS `wind` (
   `id_sensor` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `wind`
+ ADD PRIMARY KEY (`timestamp`,`id_sensor`); 
+ 
 CREATE TABLE IF NOT EXISTS `wind_day` (
   `date` char(10) COLLATE utf8_unicode_ci NOT NULL,
   `id_sensor` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-ALTER TABLE `energylink`
- ADD PRIMARY KEY (`timestamp`);
-
-ALTER TABLE `history`
- ADD PRIMARY KEY (`id_sensor`,`time`);
-
-ALTER TABLE `rain`
- ADD PRIMARY KEY (`date`,`id_sensor`);
-
-ALTER TABLE `sensors`
- ADD PRIMARY KEY (`id_sensor`,`type`);
-
-ALTER TABLE `settings`
- ADD PRIMARY KEY (`variable`);
-
-ALTER TABLE `statusses`
- ADD PRIMARY KEY (`status`);
-
-ALTER TABLE `switches`
- ADD PRIMARY KEY (`id_switch`,`type`);
-
-ALTER TABLE `temperature`
- ADD PRIMARY KEY (`timestamp`,`id_sensor`);
-
-ALTER TABLE `temp_day`
- ADD PRIMARY KEY (`date`,`id_sensor`);
-
-ALTER TABLE `versie`
- ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `wind`
- ADD PRIMARY KEY (`timestamp`,`id_sensor`);
-
 ALTER TABLE `wind_day`
- ADD PRIMARY KEY (`date`,`id_sensor`);
+ ADD PRIMARY KEY (`date`,`id_sensor`); 
+ 
+ 
+ 
+ 
 
 
-ALTER TABLE `versie`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
 
 INSERT IGNORE INTO `statusses` (`status`, `omschrijving`) VALUES
 ('contactno', 'Gesloten'),
 ('contactyes', 'Open'),
 ('doorbellyes', 'Gebeld'),
+('lightno', 'Licht'),
+('lightyes', 'Donker'),
 ('motionno', 'motionno'),
 ('motionyes', 'Beweging'),
 ('smokeno', 'Tested'),
@@ -155,8 +196,32 @@ INSERT IGNORE INTO `settings` (`variable`, `value`) VALUES
 ('positie_temperatuur', '6'),
 ('positie_wind', '9'),
 ('refreshinterval', '30'),
-('secretpassword', '5678'),
-('secretusername', '1234');
+('positie_energylink', '7'),
+('defaultthermometer', '1'),
+('toon_radiatoren', 'yes'),
+('toon_regen', 'yes'),
+('toon_scenes', 'yes'),
+('toon_schakelaars', 'yes'),
+('toon_sensoren', 'yes'),
+('toon_somfy', 'yes'),
+('toon_temperatuur', 'yes'),
+('toon_wind', 'yes'),
+('toon_energylink', 'yes'),
+('css_td_newgroup', 'border-top:1px solid black; padding-top:10px;'),
+('css_body', ''),
+('css_item', ''),
+('email_from', 'guy@egregius.be'),
+('email_notificatie', 'guy@egregius.be'),
+('toon_acties', 'yes'),
+('positie_acties', '9'),
+('css_h1', 'font-weight:100;font-size:40px;'),
+('css_h2', 'font-weight:200;font-size:22px;'),
+('css_h3', 'font-weight:200;font-size:18px;'),
+('toon_schakelaars2', 'yes')
+;
 
-INSERT IGNORE INTO `versie` (`versie`, `datumupdate`) VALUES
-(20150128, '2015-01-28 15:13:56');
+INSERT IGNORE INTO users (id, username, password, salt) VALUES 
+(NULL, 'default', '1be8bc8019a469136fc1c1f4761ee82d09b8faabc3bdb6f5b48876bf6f8c2613', '3a2043a64fba5959');
+
+INSERT IGNORE INTO `versie` (`versie`) VALUES
+(20150219);
