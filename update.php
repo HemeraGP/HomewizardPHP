@@ -159,13 +159,13 @@ if(isset($_POST['updatedatabasenow'])) {
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
 	}
 	if($versie<20150218) {
-		$sql="ALTER TABLE settings ADD user VARCHAR(255) NOT NULL DEFAULT 'default' , ADD INDEX (user) ;";
+		$sql="ALTER TABLE settings ADD user VARCHAR(50) NOT NULL DEFAULT 'default' , ADD INDEX (user) ;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
 		$sql="ALTER TABLE settings DROP PRIMARY KEY;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
 		$sql="ALTER TABLE settings ADD PRIMARY KEY (variable,user);";
 		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
-		$sql="CREATE TABLE users (id int(11) NOT NULL AUTO_INCREMENT,username varchar(255) COLLATE utf8_unicode_ci NOT NULL,password char(64) COLLATE utf8_unicode_ci NOT NULL,salt char(16) COLLATE utf8_unicode_ci NOT NULL,
+		$sql="CREATE TABLE users (id int(11) NOT NULL AUTO_INCREMENT,username varchar(50) COLLATE utf8_unicode_ci NOT NULL,password char(64) COLLATE utf8_unicode_ci NOT NULL,salt char(16) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (id),UNIQUE KEY username (username)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 		$sql="INSERT IGNORE INTO users (id, username, password, salt) VALUES (NULL, 'default', '1be8bc8019a469136fc1c1f4761ee82d09b8faabc3bdb6f5b48876bf6f8c2613', '3a2043a64fba5959');";

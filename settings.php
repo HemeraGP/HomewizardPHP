@@ -259,7 +259,7 @@ if($showopmaak==true) {
 		<tr>
 			<td align="left">'.$row['variable'].'</td>
 			<td><input type="hidden" name="variable" id="variable" value="'.$row['variable'].'"/>';
-		if((strpos($row['variable'], 'css') === 0)) { echo '<textarea name="value" id="value" cols="32" rows="5">'.$row['value'].'</textarea>';} 
+		if((strpos($row['variable'], 'css') === 0)) { echo '<textarea name="value" id="value" cols="32" rows="2">'.$row['value'].'</textarea>';} 
 		else if(in_array($row['variable'], array('debug','developermode','toon_radiatoren','toon_regen','toon_scenes','toon_schakelaars','toon_schakelaars2','toon_sensoren','toon_somfy','toon_temperatuur','toon_wind','toon_energylink','toon_acties'))) {
 			if($row['value']=="yes") {echo '<input type="hidden" name="value" id="value" value="no"/>';} else {echo '<input type="hidden" name="value" id="value" value="yes"/>';}
 		echo '

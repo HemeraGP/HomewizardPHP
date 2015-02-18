@@ -22,7 +22,7 @@ if(!isset($gebruiker)) {
             $salt = null;
         }
         $query_params = array(
-            ':username' => $_COOKIE["HomewizardPHP"],
+            ':username' => $_POST['username'],
         );
         if($password !== null)
         {
@@ -61,7 +61,7 @@ if(!isset($gebruiker)) {
 <h2>Wijzig wachtwoord</h2>
 <form action="#" method="post">
     Gebruikersnaam:<br /><br/>
-    <b><font size="+1"><?php echo htmlentities($_COOKIE["HomewizardPHP"], ENT_QUOTES, 'UTF-8'); ?></font></b>
+    <b><input type="text" name="username" value="<?php echo htmlentities($_COOKIE["HomewizardPHP"], ENT_QUOTES, 'UTF-8'); ?>" /></b>
     
     <br /><br />
     Wachtwoord:<br />

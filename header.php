@@ -34,7 +34,6 @@ $authenticated = false;
 
 if($_SERVER['REMOTE_ADDR']=='127.0.0.1' || isset($_COOKIE["HomewizardPHP"])) $authenticated = true; 
 if($authenticated==true && $debug=='yes') {error_reporting(E_ALL);ini_set("display_errors", "on");} 
-error_reporting(E_ALL);ini_set("display_errors", "on");
 $actual_page = "ndex.php";
 if(isset($_SERVER['PHP_SELF'])) $actual_page = substr($_SERVER['PHP_SELF'], -9);
 if ($actual_page=="index.php") {
@@ -47,7 +46,10 @@ body {'.$css_body.';}
 h1 {'.$css_h1.';}
 h2 {'.$css_h2.';}
 h3 {'.$css_h3.';}
-
+.temp {'.$css_temp.'}
+.blue {'.$css_blue.'}
+.red {'.$css_red.'}
+.green {'.$css_green.'}
 </style>';
 ?>
 

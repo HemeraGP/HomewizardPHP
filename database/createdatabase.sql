@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `variable` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(10000) COLLATE utf8_unicode_ci NOT NULL,
   `favorite` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default'
+  `user` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `settings`
@@ -116,7 +116,7 @@ ALTER TABLE `temp_day`
 
 CREATE TABLE IF NOT EXISTS `users` (
 `id` int(11) NOT NULL,
-  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `password` char(64) COLLATE utf8_unicode_ci NOT NULL,
   `salt` char(16) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
