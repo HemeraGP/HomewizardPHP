@@ -39,7 +39,7 @@ if($authenticated==true) {
 		$volgorde=($_POST['volgorde']);
 		$type=($_POST['soort']);
 		$favorite=($_POST['favorite']);
-		$sql="update switches set volgorde = '$volgorde', favorite = '$favorite' where id_switch = $id_switch AND type like '$type'";
+		$sql="update switches set volgorde = '$volgorde', favorite = '$favorite' where id_switch = $id_switch AND type like '$type' AND user like '$gebruiker'";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		$showeditswitches=true;
 		$showparameters = false;
@@ -52,7 +52,7 @@ if($authenticated==true) {
 		if(isset($_POST['tempk'])) $tempk=($_POST['tempk']); else $tempk = 0;
 		if(isset($_POST['tempw'])) $tempw=($_POST['tempw']); else $tempw = 0;
 		if(isset($_POST['correctie'])) $correctie=($_POST['correctie']); else $correctie = 0;
-		$sql="update sensors set volgorde = '$volgorde', favorite = '$favorite', tempk = '$tempk', tempw = '$tempw', correctie = '$correctie' where id_sensor = $id_sensor AND type like '$type'";
+		$sql="update sensors set volgorde = '$volgorde', favorite = '$favorite', tempk = '$tempk', tempw = '$tempw', correctie = '$correctie' where id_sensor = $id_sensor AND type like '$type' AND user like '$gebruiker'";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		$showeditsensors=true;
 		$showparameters = false;
@@ -172,6 +172,12 @@ if($authenticated==true) {
 		$sql="INSERT INTO `settings` (variable, value, favorite, user) SELECT variable, value, favorite, '$gebruiker' AS user FROM `settings` WHERE user like 'default' AND variable not in (select variable from `settings` where `user` like '$gebruiker')";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' parameters toegevoegd.</div>';
+		$sql="INSERT INTO `sensors` (id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, ttt, user) SELECT id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, ttt, '$gebruiker' AS user FROM `sensors` WHERE user like 'default' AND CONCAT(id_sensor, type) not in (select CONCAT(id_sensor, type) from `sensors` where `user` like '$gebruiker')";
+		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
+		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' sensoren toegevoegd.</div>';
+		$sql="INSERT INTO `switches` (id_switch, name, type, favorite, volgorde, temp, user) SELECT id_switch, name, type, favorite, volgorde, temp, '$gebruiker' AS user FROM `switches` WHERE user like 'default' AND CONCAT(id_switch, type) not in (select CONCAT(id_switch, type) from `switches` where `user` like '$gebruiker')";
+		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
+		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' schakelaars toegevoegd.</div>';
 	}
 	if($gebruikers==true) { 
 		$showparameters=false;
@@ -325,7 +331,7 @@ if($showacties==true) {
 }
 if($showeditswitches==true) {
 	echo '<div class="item wide gradient"><center><table width="500px" style="text-align:center"><thead><tr><th>id</th><th>Name</th><th>type</th><th>favorite</th><th>order</th></thead><tbody>';
-	$sql="select id_switch, name, type, favorite, volgorde from switches order by type asc, volgorde asc, name asc";
+	$sql="select id_switch, name, type, favorite, volgorde from switches where user like '$gebruiker' order by type asc, volgorde asc, name asc";
 	if(!$result = $db->query($sql)){ echo('<div class="error gradient">There was an error running the query [' . $db->error . ']</div>');}
 	while($row = $result->fetch_assoc()){
 		echo '
@@ -360,7 +366,7 @@ if($showeditswitches==true) {
 }
 if($showeditsensors==true) {
 	echo '<div class="item wide gradient"><center><table width="500px" style="text-align:center"><thead><tr><th>id</th><th>Name</th><th>type</th><th>favorite</th><th>order</th></thead><tbody>';
-	$sql="select id_sensor, name, type, favorite, volgorde from sensors where type not like 'temp' order by volgorde asc, name asc";
+	$sql="select id_sensor, name, type, favorite, volgorde from sensors where type not like 'temp' AND user like '$gebruiker' order by volgorde asc, name asc";
 	if(!$result = $db->query($sql)){ echo('<div class="error gradient">There was an error running the query [' . $db->error . ']</div>');}
 	while($row = $result->fetch_assoc()){
 		echo '

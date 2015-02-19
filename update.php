@@ -1,6 +1,6 @@
 <?php
 include_once "parameters.php";
-$laatsteversie = 20150219;
+$laatsteversie = 20150220;
 $sql="select versie from versie order by id desc limit 0,1";
 if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 while($row = $result->fetch_assoc()){$versie = $row['versie'];}
@@ -177,6 +177,25 @@ if(isset($_POST['updatedatabasenow'])) {
 		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
 		$sql="INSERT IGNORE INTO settings (variable, value) VALUES ('css_temp', ''),('css_blue', ''),('css_red', ''),('css_green', '')";
 		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE sensors ADD user VARCHAR(50) NOT NULL DEFAULT 'default' , ADD INDEX (user) ;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE sensors CHANGE `type` `type` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE sensors DROP PRIMARY KEY;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE sensors ADD PRIMARY KEY (id_sensor,type,user);";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE switches CHANGE `type` `type` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE switches ADD user VARCHAR(50) NOT NULL DEFAULT 'default' , ADD INDEX (user) ;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE switches DROP PRIMARY KEY;";
+		if(!$result = $db->query($sql)){ echo ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE switches ADD PRIMARY KEY (id_switch,type,user);";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE `switchhistory` CHANGE `who` `who` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'm';";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		
 	}
 	if($versie<$laatsteversie) {
 		$sql="insert into versie (versie) VALUES ('$laatsteversie');";

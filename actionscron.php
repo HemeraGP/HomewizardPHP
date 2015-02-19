@@ -1,7 +1,7 @@
 <?php
 if(!isset($_POST['actionscron'])) {
 include "parameters.php";
-	$sql="select variable, value from settings order by variable asc";
+	$sql="select variable, value from settings where user like 'default' order by variable asc";
 	if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
 	$acceptedips = array();
 	while($row = $result->fetch_assoc()){
@@ -32,7 +32,7 @@ if($actie_timer_living=='yes'){
 	if($thermometerte5<$tempw) $voorwarmen = ceil(($tempw-$thermometerte5)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
 	if(in_array(date('N', time()), array(1,2,3,4)) && time()>=(strtotime('18:00')-$voorwarmen) && time()<=strtotime('22:00')) $warm=true;
 	else if (in_array(date('N', time()), array(5,6,7)) && time()>=(strtotime('7:00')-$voorwarmen) && time()<=strtotime('23:00')) $warm=true;
-	else if(time()>(strtotime('8:00')) && (time()<(strtotime('23:00'))) && ($switchstatus14>$tempk || $switchstatus15>$tempk)) $warm=true;
+	else if(time()>=strtotime('8:00') && time()<=strtotime('22:00') && ($switchstatus14>$tempk || $switchstatus15>$tempk)) $warm=true;
 
 	if($warm==true && $thermometerte1<=20) {
 		if($switchstatus14<$tempw) {radiator(14, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}

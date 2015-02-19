@@ -3,12 +3,12 @@ include "header.php";
 include "functions.php";
 if($authenticated == true) {
 	if (isset($_POST['schakel'])) {
-		if (isset($_POST['dimlevel'])) echo dim($_POST['switch'],$_POST['dimlevel'],'m',null,null);
-		else if (isset($_POST['somfy'])) echo somfy($_POST['switch'],$_POST['somfy'],'m',null,null);
-		else if (isset($_POST['schakel'])) echo schakel($_POST['switch'],$_POST['schakel'],'m',null,null);
+		if (isset($_POST['dimlevel'])) echo dim($_POST['switch'],$_POST['dimlevel'],$gebruiker,null,null);
+		else if (isset($_POST['somfy'])) echo somfy($_POST['switch'],$_POST['somfy'],$gebruiker,null,null);
+		else if (isset($_POST['schakel'])) echo schakel($_POST['switch'],$_POST['schakel'],$gebruiker,null,null);
 	} 
-	if(isset($_POST['radiator']) && isset($_POST['set_temp'])) echo radiator($_POST['radiator'],$_POST['set_temp'],'m',null,null);
-	if (isset($_POST['schakelscene'])) echo scene($_POST['scene'],$_POST['schakelscene'],'m',null,null);
+	if(isset($_POST['radiator']) && isset($_POST['set_temp'])) echo radiator($_POST['radiator'],$_POST['set_temp'],$gebruiker,null,null);
+	if (isset($_POST['schakelscene'])) echo scene($_POST['scene'],$_POST['schakelscene'],$gebruiker,null,null);
 	if (isset($_POST['updactie'])) {
 		$variable = $_POST['variable'];
 		if($_POST['updactie']=='off') $value = 'no'; else $value = 'yes';
@@ -26,7 +26,7 @@ if($authenticated == true) {
 					<input type="hidden" name="showallswitches" value="yes" />
 					<a href="#" onclick="document.getElementById(\'showallswitches\').submit();" style="text-decoration:none"><h2 >Schakelaars</h2></a>
 				</form>';
-		$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun') AND volgorde < 20000";
+		$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun') AND volgorde < 20000 AND user like '$gebruiker'";
 		if (!isset($_POST['showallswitches'])) $sql.=" AND favorite like 'yes'";
 		$sql.=" order by volgorde asc, favorite desc, name asc";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -88,7 +88,7 @@ if($authenticated == true) {
 		$result->free();
 		echo '<br/><br/></div>';
 		if($toon_schakelaars2=='yes') {
-			$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun') AND volgorde > 19999";
+			$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('switch', 'dimmer', 'virtual', 'asun') AND volgorde > 19999 AND user like '$gebruiker'";
 			if (!isset($_POST['showallswitches2'])) $sql.=" AND favorite like 'yes'";
 			$sql.=" order by volgorde asc, favorite desc, name asc";
 			if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -164,7 +164,7 @@ if($authenticated == true) {
 					<input type="hidden" name="showallscenes" value="yes" />
 					<a href="#" onclick="document.getElementById(\'showallscenes\').submit();" style="text-decoration:none"><h2>Scènes</h2></a>
 				</form>';
-		$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('scene')";
+		$sql="select id_switch, name, type, favorite, volgorde from switches where type in ('scene') AND user like '$gebruiker'";
 		if (!isset($_POST['showallscenes'])) $sql.=" AND favorite like 'yes'";
 		$sql.=" order by volgorde asc, favorite desc, name asc";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -210,7 +210,7 @@ if($authenticated == true) {
 					<input type="hidden" name="showallsomfy" value="yes" />
 					<a href="#" onclick="document.getElementById(\'showallsomfy\').submit();" style="text-decoration:none"><h2>Somfy</h2></a>
 				</form>';
-		$sql="select id_switch, name, volgorde from switches where type like 'somfy'";
+		$sql="select id_switch, name, volgorde from switches where type like 'somfy' AND user like '$gebruiker'";
 		if (!isset($_POST['showallsomfy'])) $sql.=" AND favorite like 'yes'";
 		$sql.=" order by volgorde asc, favorite desc, name asc";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -249,7 +249,7 @@ if($authenticated == true) {
 					<input type="hidden" name="showallradiators" value="yes"/>
 					<a href="#" onclick="document.getElementById(\'showallradiators\').submit();" style="text-decoration:none"><h2>Radiatoren</h2></a>
 				</form>';
-		$sql="select r.id_switch, r.name as rname, r.temp, s.name as sname, r.volgorde from switches r join sensors s ON r.temp = s.id_sensor AND s.type like 'temp' where r.type like 'radiator'";
+		$sql="select r.id_switch, r.name as rname, r.temp, s.name as sname, r.volgorde from switches r left join sensors s ON r.temp = s.id_sensor AND s.type like 'temp' where r.type like 'radiator' AND r.user like '$gebruiker' AND s.user like '$gebruiker'";
 		if (!isset($_POST['showallradiators'])) $sql.=" AND r.favorite like 'yes'";
 		$sql.=" order by r.volgorde asc, r.favorite desc, r.name asc";
 		if(!$result = $db->query($sql)){ echo ('There was an error running the query [' . $db->error . ']');}
@@ -318,7 +318,7 @@ if($authenticated == true) {
 					<input type="hidden" name="showallsensors" value="yes"/>
 					<a href="#" onclick="document.getElementById(\'showallsensors\').submit();" style="text-decoration:none"><h2>Sensoren</h2></a>
 				</form>';
-		$sql="select id_sensor, name, type, volgorde from sensors WHERE type in ('smoke','contact','doorbell','motion','light')";
+		$sql="select id_sensor, name, type, volgorde from sensors WHERE type in ('smoke','contact','doorbell','motion','light') AND user like '$gebruiker'";
 		if (!isset($_POST['showallsensors'])) $sql.=" AND favorite like 'yes'";
 		$sql.=" order by volgorde asc, favorite desc, name asc";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -382,7 +382,7 @@ if($toon_temperatuur=='yes') {
 					<input type="hidden" name="showalltemps" value="yes"/>
 					<a href="#" onclick="document.getElementById(\'showalltemps\').submit();" style="text-decoration:none"><h2>Temperatuur</h2></a>
 				</form>';
-		$sql="select id_sensor, name, volgorde, tempk, tempw from sensors WHERE type in ('temp')";
+		$sql="select id_sensor, name, volgorde, tempk, tempw from sensors WHERE type in ('temp') AND user like '$gebruiker'";
 		if (!isset($_POST['showalltemps'])) $sql.=" AND favorite like 'yes'";
 		$sql.=" order by volgorde asc, favorite desc, name asc";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -410,7 +410,7 @@ if($toon_temperatuur=='yes') {
 		echo '</div>';
 	 } else {
 		 echo '<div class="item gradient"><p class="number">'.$positie_temperatuur.'</p><h2>Temperatuur</h2>';
-		$sql="select id_sensor, name, volgorde, tempk, tempw from sensors WHERE type in ('temp') AND id_sensor = $defaultthermometer ";
+		$sql="select id_sensor, name, volgorde, tempk, tempw from sensors WHERE type in ('temp') AND id_sensor = $defaultthermometer AND user like 'default' ";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
 		if($result->num_rows>0) {	
 			echo '<div><table width="100%"><tr><th></th><th>temp</th><th>hum</th></tr>';

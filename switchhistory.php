@@ -15,7 +15,7 @@ echo '<option>20</option>
 <option>100000</option>
 </select>
 <select name="filter" class="abutton abuttonhistory gradient" onChange="this.form.submit()"><option ';if(isset($_POST['filter'])) { if($_POST['filter']=='all') print 'selected';} print '>All</option>';
-$sql = "SELECT name FROM switches WHERE type not like 'scene'";
+$sql = "SELECT name FROM switches WHERE type not like 'scene' and user like '$gebruiker'";
 if(isset($_POST['filtertype'])) {
 	$filtertype = $_POST['filtertype'];
 	if($filtertype != "All") $sql .= " AND type like '$filtertype'";
@@ -28,7 +28,7 @@ while($row = $result->fetch_assoc()){
 $result->free();
 print '</select>
 <select name="filtertype" class="abutton abuttonhistory gradient" onChange="this.form.submit()"><option ';if(isset($_POST['filtertype'])) { if($_POST['filtertype']=='all') print 'selected';} print '>All</option>';
-$sql = "SELECT type FROM switches WHERE type not like 'scene' GROUP BY type ORDER BY type ASC";
+$sql = "SELECT type FROM switches WHERE type not like 'scene' AND user like '$gebruiker' GROUP BY type ORDER BY type ASC";
 if(!$result = $db->query($sql)){ die('There was an error running the query [' . $db->error . ']');}
 while($row = $result->fetch_assoc()){
 	print '<option ';if(isset($_POST['filtertype'])) { if($_POST['filtertype']==$row['type']) print 'selected';} print '>'.$row['type'].'</option>';
@@ -40,7 +40,7 @@ print '</select>
 $sql = "SELECT h.id_switch, h.timestamp, h.type, h.who, s.name 
 FROM switchhistory h 
 LEFT JOIN switches s ON h.id_switch=s.id_switch 
-WHERE s.type not like 'scene' and h.who not like 'd'";
+WHERE s.type not like 'scene' and h.who not like 'd' and s.user like '$gebruiker'";
 if(isset($_POST['filter'])) {
 	$filter = $_POST['filter'];
 	if($filter != "All") $sql .= " AND s.name like '$filter'";
