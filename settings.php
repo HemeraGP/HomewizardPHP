@@ -401,7 +401,7 @@ if($showeditsensors==true) {
 	$result->free();
 	echo '</tbody></table></center></div>';
 	echo '<div class="item wide gradient"><center><table width="500px" style="text-align:center"><thead><tr><th>id</th><th>Name</th><th>type</th><th>favorite</th><th>opties</th></thead><tbody>';
-	$sql="select id_sensor, name, type, favorite, volgorde, tempk, tempw, correctie from sensors where type like 'temp' order by volgorde asc, name asc";
+	$sql="select id_sensor, name, type, favorite, volgorde, tempk, tempw, correctie from sensors where type like 'temp' AND user like '$gebruiker' order by volgorde asc, name asc";
 	if(!$result = $db->query($sql)){ echo('<div class="error gradient">There was an error running the query [' . $db->error . ']</div>');}
 	while($row = $result->fetch_assoc()){
 		echo '
@@ -418,7 +418,10 @@ if($showeditsensors==true) {
 			<input type="hidden" name="editsensor" value="update">
 			<input type="hidden" name="id_sensor" id="id_sensor" value="'.$row['id_sensor'].'"/>
 			<input type="hidden" name="soort" id="soort" value="'.$row['type'].'"/>
-			<input type="hidden" name="volgorde" id="volgorde" value="'.$row['volgorde'].'" size="5"/>
+			<input type="hidden" name="volgorde" id="volgorde" value="'.$row['volgorde'].'"/>
+			<input type="hidden" name="tempk" id="tempk" value="'.$row['tempk'].'"/>
+			<input type="hidden" name="tempw" id="tempw" value="'.$row['tempw'].'"/>
+			<input type="hidden" name="correctie" id="correctie" value="'.$row['correctie'].'"/>
 			<input type="checkbox" value="'.$row['favorite'].'" id="'.$row['type'].$row['id_sensor'].'" name="'.$row['id_sensor'].'" '; if($row['favorite']=="yes") {print 'checked';} print ' onChange="this.form.submit()"/>
 			<label for="'.$row['type'].$row['id_sensor'].'"></label>
 		</form></section>

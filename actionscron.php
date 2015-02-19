@@ -19,9 +19,9 @@ include "functions.php";
 
 if($actie_brander=='yes') {
 	if($switchstatus6>$thermometerte4 || $switchstatus7>$thermometerte6 || $switchstatus8>$thermometerte7 || $switchstatus14>$thermometerte5 || $switchstatus15>$thermometerte5) {
-		if($switchstatus12=='off') {schakel(12, 'on', 'c', $email_notificatie, 'yes');sleep(2);} 
+		if($switchstatus12=='off') {schakel(12, 'on', 'Auto', $email_notificatie, 'yes');sleep(2);} 
 	} else {
-		if($switchstatus12=='on') {schakel(12, 'off', 'c', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus12=='on') {schakel(12, 'off', 'Auto', $email_notificatie, 'yes');sleep(2);}
 	}
 }
 
@@ -35,17 +35,17 @@ if($actie_timer_living=='yes'){
 	else if(time()>=strtotime('8:00') && time()<=strtotime('22:00') && ($switchstatus14>$tempk || $switchstatus15>$tempk)) $warm=true;
 
 	if($warm==true && $thermometerte1<=20) {
-		if($switchstatus14<$tempw) {radiator(14, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
-		if($switchstatus14<$tempw) {radiator(15, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus14<$tempw) {radiator(14, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus14<$tempw) {radiator(15, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus14>$tempk) {
-			$laatsteschakel = laatsteschakeltijd(14,null, 'm');
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(14, $tempk, 'c', $email_notificatie, 'yes');sleep(2);
+			$laatsteschakel = laatsteschakeltijd(14,null, null);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(14, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 		if($switchstatus15>$tempk) {
-			$laatsteschakel = laatsteschakeltijd(15,null, 'm');
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(15, $tempk, 'c', $email_notificatie, 'yes');sleep(2);
+			$laatsteschakel = laatsteschakeltijd(15,null, null);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(15, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 	}
@@ -63,13 +63,13 @@ if($actie_timer_badkamer=='yes'){
 	else if(time()>strtotime('18:00') && time()<strtotime('23:00')) $lauw=true;
 	
 	if($warm==true && $thermometerte1<=21) {
-		if($switchstatus6<$tempw) {radiator(6, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus6<$tempw) {radiator(6, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else if($lauw==true && $thermometerte1<18) {
-		if($switchstatus6<$tempn) {radiator(6, $tempn, 'c', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus6<$tempn) {radiator(6, $tempn, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else if($warm==false && $lauw==false) {
 		if($switchstatus6>$tempk) {
-			$laatsteschakel = laatsteschakeltijd(6,null, 'm');
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(6, $tempk, 'c', $email_notificatie, 'yes');sleep(2);
+			$laatsteschakel = laatsteschakeltijd(6,null, null);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(6, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 	}
@@ -86,11 +86,11 @@ if($actie_timer_slaapkamer=='yes'){
 		if((time()>=(strtotime('22:00')-$voorwarmen)) && time()<=(strtotime('23:30'))) $warm=true;
 	}
 	if($warm==true && $thermometerte1<=13) {
-		if($switchstatus7<$tempw) {radiator(7, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus7<$tempw) {radiator(7, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus7>$tempk) {
-			$laatsteschakel = laatsteschakeltijd(7,null, 'm');
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(7, $tempk, 'c', $email_notificatie, 'yes');sleep(2);
+			$laatsteschakel = laatsteschakeltijd(7,null, null);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(7, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 	}
@@ -111,11 +111,11 @@ if($actie_timer_slaapkamer_tobi=='yes'){
 		}
 	}
 	if($warm==true && $thermometerte1<=13) {
-		if($switchstatus8<$tempw) {radiator(8, $tempw, 'c', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus8<$tempw) {radiator(8, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus8>$tempk) {
-			$laatsteschakel = laatsteschakeltijd(8,null, 'm');
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(8, $tempk, 'c', $email_notificatie, 'yes');sleep(2);
+			$laatsteschakel = laatsteschakeltijd(8,null, null);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(8, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 	}
@@ -126,9 +126,9 @@ if($actie_lichtgarage=='yes') {
 		if(strtotime($sensortimestamp1)>time()) {$sensor1tijd = laatstesensortijd($sensorid1,null);$sensortimestamp1 = strtotime($sensor1tijd['time']);} else {$sensortimestamp1 = strtotime($sensortimestamp1);}
 		if(strtotime($sensortimestamp2)>time()) {$sensor2tijd = laatstesensortijd($sensorid2,null);$sensortimestamp2 = strtotime($sensor2tijd['time']);} else {$sensortimestamp2 = strtotime($sensortimestamp2);}
 		if($sensortimestamp1<(time()-200) && $sensortimestamp2<(time()-200)) {
-			$laatsteschakel = laatsteschakeltijd(1,null, 'm');
+			$laatsteschakel = laatsteschakeltijd(1,null, null);
 			if($laatsteschakel['timestamp']<(time()-7200) || $laatsteschakel['type']=='off') {
-				schakel(1, 'off', 'c', $email_notificatie, 'yes');sleep(2);
+				schakel(1, 'off', 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		} 
 	}
@@ -141,9 +141,9 @@ if($actie_timer_pluto=='yes'){
 		if($switchstatus0=='off') {schakel(0, 'on', 'c', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus0=='on') {
-			$laatsteschakel = laatsteschakeltijd(0,null, 'm');
+			$laatsteschakel = laatsteschakeltijd(0,null, null);
 			if($laatsteschakel['timestamp']<(time()-7200))  {
-				schakel(0, 'off', 'c', $email_notificatie, 'yes');sleep(2);
+				schakel(0, 'off', 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 	}
