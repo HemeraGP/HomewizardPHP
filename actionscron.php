@@ -197,6 +197,22 @@ if($actie_thuis=='yes'){
 }
 echo '</div>';
 
+if($actie_zonneluifel=='yes'){
+	if($rainmeter3h1 > 0) {
+		if($Zonneluifellaatstomhoogslechtweer<time()-3600) {
+			somfy(13, 'up', 'Regen!', $email_notificatie, 'no');
+			setparameter('Zonneluifellaatstomhoogslechtweer', time());
+		}
+	}
+	if($windmeterws1 > 10 ||$windmetergu1 > 10) {
+		if($Zonneluifellaatstomhoogslechtweer<time()-3600) {
+			somfy(13, 'up', 'Wind!', $email_notificatie, 'no');
+			setparameter('Zonneluifellaatstomhoogslechtweer', time());
+		}
+	}
+	if($thermometerte1 > 18) somfy(13, 'down', 'Te Warm', $email_notificatie, 'no');
+} 
+
 if($actie_batterij=='yes'){
 	if(date('H:i',time())=="16:43" && date('z', time()) %3 == 0) {
 		$json = file_get_contents($jsonurl.'get-sensors');

@@ -22,14 +22,16 @@ if(isset($_POST['gebruikers'])) {$gebruikers = true; $showparameters = false;}
 if($authenticated==true) {
 	if(isset($_POST['deleteswitch'])) { 
 		$id_switch=($_POST['id_switch']);
-		$sql="delete from switches where id_switch = $id_switch";
+		$type=($_POST['type']);
+		$sql="delete from switches where id_switch = $id_switch and type like '$type'";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		$showeditswitches=true;
 		$showparameters = false;
 	}
 	if(isset($_POST['deletesensor'])) { 
 		$id_sensor=($_POST['id_sensor']);
-		$sql="delete from sensors where id_sensor = $id_sensor";
+		$id_switch=($_POST['id_switch']);
+		$sql="delete from sensors where id_sensor = $id_sensor and type like '$type'";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		$showeditsensors=true;
 		$showparameters = false;
@@ -104,6 +106,17 @@ if($authenticated==true) {
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		echo '<div class="item wide gradient"><p class="number">7</p><br>'.$db->affected_rows.' Records verwijderd voor gewiste sensoren</div>';
 	}
+	if(isset($_POST['cleandatayfromremovedusers'])) { 
+		$sql="DELETE FROM `settings` WHERE user not in (select username from users)";
+		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
+		echo '<div class="item wide gradient"><p class="number">7</p><br>'.$db->affected_rows.' settings verwijderd.</div>';
+		$sql="DELETE FROM `sensors` WHERE user not in (select username from users)";
+		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
+		echo '<div class="item wide gradient"><p class="number">7</p><br>'.$db->affected_rows.' sensors verwijderd.</div>';
+		$sql="DELETE FROM `switches` WHERE user not in (select username from users)";
+		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
+		echo '<div class="item wide gradient"><p class="number">7</p><br>'.$db->affected_rows.' switches verwijderd.</div>';
+	}
 	if(isset($_POST['updateswitches'])) { 
 		$showparameters=false;
 		echo '<div class="item wide gradient"><p class="number">9</p>';
@@ -127,37 +140,27 @@ if($authenticated==true) {
 	}
 	if(isset($_POST['jsongetsensors'])) { 
 		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">9</p><textarea rows="50" cols="68">';
+		echo '<div class="item wide gradient"><p class="number">9</p><h2>get-sensors</h2><textarea rows="30" cols="60">';
 		$json = file_get_contents($jsonurl.'get-sensors');
 		echo $json.'</textarea></div>';
-	}
-	if(isset($_POST['jsongetstatus'])) { 
-		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">9</p><textarea rows="50" cols="68">';
+		flush();sleep(1);
+		echo '<div class="item wide gradient"><p class="number">9</p><h2>get-status</h2><textarea rows="30" cols="60">';
 		$json = file_get_contents($jsonurl.'get-status');
 		echo $json.'</textarea></div>';
-	}
-	if(isset($_POST['jsongetsuntimes'])) { 
-		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">9</p><textarea rows="50" cols="68">';
+		flush();sleep(1);
+		echo '<div class="item wide gradient"><p class="number">9</p><h2>suntimes/today</h2><textarea rows="3" cols="60">';
 		$json = file_get_contents($jsonurl.'suntimes/today');
 		echo $json.'</textarea></div>';
-	}
-	if(isset($_POST['jsongettimers'])) { 
-		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">9</p><textarea rows="50" cols="68">';
+		flush();sleep(1);
+		echo '<div class="item wide gradient"><p class="number">9</p><h2>timers</h2><textarea rows="30" cols="60">';
 		$json = file_get_contents($jsonurl.'timers');
 		echo $json.'</textarea></div>';
-	}
-	if(isset($_POST['jsongetnotifications'])) { 
-		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">9</p><textarea rows="50" cols="68">';
+		flush();sleep(1);
+		echo '<div class="item wide gradient"><p class="number">9</p><h2>notifications</h2><textarea rows="30" cols="60">';
 		$json = file_get_contents($jsonurl.'notifications');
 		echo $json.'</textarea></div>';
-	}
-	if(isset($_POST['jsongetswlist'])) { 
-		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">9</p><textarea rows="50" cols="68">';
+		flush();sleep(1);
+		echo '<div class="item wide gradient"><p class="number">9</p><h2>swlist</h2><textarea rows="30" cols="60">';
 		$json = file_get_contents($jsonurl.'swlist');
 		echo $json.'</textarea></div>';
 	}
@@ -165,14 +168,12 @@ if($authenticated==true) {
 		$wisgebruiker = $_POST['gebruikersnaam'];
 		$sql="DELETE FROM `users` WHERE username like '$wisgebruiker'";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
-		$sql="DELETE FROM `settings` WHERE user like '$wisgebruiker'";
-		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 	}
 	if(isset($_POST['importeerparameters'])) { 
 		$sql="INSERT INTO `settings` (variable, value, favorite, user) SELECT variable, value, favorite, '$gebruiker' AS user FROM `settings` WHERE user like 'default' AND variable not in (select variable from `settings` where `user` like '$gebruiker')";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' parameters toegevoegd.</div>';
-		$sql="INSERT INTO `sensors` (id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, ttt, user) SELECT id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, ttt, '$gebruiker' AS user FROM `sensors` WHERE user like 'default' AND CONCAT(id_sensor, type) not in (select CONCAT(id_sensor, type) from `sensors` where `user` like '$gebruiker')";
+		$sql="INSERT INTO `sensors` (id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, user) SELECT id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, '$gebruiker' AS user FROM `sensors` WHERE user like 'default' AND CONCAT(id_sensor, type) not in (select CONCAT(id_sensor, type) from `sensors` where `user` like '$gebruiker')";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' sensoren toegevoegd.</div>';
 		$sql="INSERT INTO `switches` (id_switch, name, type, favorite, volgorde, temp, user) SELECT id_switch, name, type, favorite, volgorde, temp, '$gebruiker' AS user FROM `switches` WHERE user like 'default' AND CONCAT(id_switch, type) not in (select CONCAT(id_switch, type) from `switches` where `user` like '$gebruiker')";
@@ -204,18 +205,13 @@ if($authenticated==true) {
 	<form method="post"><input type="submit" name="showacties" value="Acties" class="abutton settings gradient"/></form>
 	<form method="post"><input type="submit" name="editsensors" value="Bewerk sensoren" class="abutton settings gradient"/></form>
 	<form method="post"><input type="submit" name="editswitches" value="Bewerk schakelaars" class="abutton settings gradient"/></form>
+	<form method="post"><input type="submit" name="gebruikers" value="Gebruikers" class="abutton settings gradient"/></form>
 	<form method="post"><input type="submit" name="updateswitches" value="Import schakelaars, historiek" class="abutton settings gradient"/></form>
 	<form method="post"><input type="submit" name="updatedatabase" value="Update Database" class="abutton settings gradient"/></form>
-	<form method="post"><input type="submit" name="jsongetsensors" value="JSON get-sensors" class="abutton settings gradient"/></form>
-	<form method="post"><input type="submit" name="jsongetstatus" value="JSON get-status" class="abutton settings gradient"/></form>
-	<form method="post"><input type="submit" name="jsongetswlist" value="JSON swlist" class="abutton settings gradient"/></form>
-	<form method="post"><input type="submit" name="jsongetsuntimes" value="JSON suntimes" class="abutton settings gradient"/></form>
-	<form method="post"><input type="submit" name="jsongettimers" value="JSON timers" class="abutton settings gradient"/></form>
-	<form method="post"><input type="submit" name="jsongetnotifications" value="JSON notifications" class="abutton settings gradient"/></form>
 	<form method="post"><input type="submit" name="cleandatabase" value="Clean Database" class="abutton settings gradient"/></form>
+	<form method="post"><input type="submit" name="jsongetsensors" value="JSON replies" class="abutton settings gradient"/></form>
 	<form method="post"><input type="submit" name="showtest" value="Test" class="abutton settings gradient"/></form>
 	<form method="post"><input type="submit" name="actionscron" value="Actions cron" class="abutton settings gradient"/></form>
-	<form method="post"><input type="submit" name="gebruikers" value="Gebruikers" class="abutton settings gradient"/></form>
 	Kijk op <a href="http://homewizard.org/index.php" target="_blank">HomeWizard.org</a><br/>voor uitleg.<br/></div>
 	';
 
@@ -450,6 +446,9 @@ if($cleandatabase==true) {
 			</form>
 			<form method="post"><input type="hidden" name="cleandatabase" value="cleandatabase"/>
 				<input type="submit" name="cleanhistoryfromremovedsensors" value="Verwijder historiek van gewiste sensoren" class="abutton settings gradient"/>
+			</form>
+			<form method="post"><input type="hidden" name="cleandatabase" value="cleandatabase"/>
+				<input type="submit" name="cleandatayfromremovedusers" value="Verwijder settings van gewiste gebruikers" class="abutton settings gradient"/>
 			</form>
 		</div>';
 	echo '<div class="item wide gradient"><center>

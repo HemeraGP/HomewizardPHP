@@ -1,6 +1,6 @@
 <?php
 include_once "parameters.php";
-$laatsteversie = 20150220;
+$laatsteversie = 20150221;
 $sql="select versie from versie order by id desc limit 0,1";
 if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 while($row = $result->fetch_assoc()){$versie = $row['versie'];}
@@ -195,7 +195,24 @@ if(isset($_POST['updatedatabasenow'])) {
 		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
 		$sql="ALTER TABLE `switchhistory` CHANGE `who` `who` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'm';";
 		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
-		
+	}
+	if($versie<20150221) {
+		$sql="ALTER TABLE energylink CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE history CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE rain CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE sensors CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE statusses CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE temperature CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE temp_day CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
+		$sql="ALTER TABLE wind CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+		if(!$result = $db->query($sql)){ die ('There was an error running the query ['.$sql.'][' . $db->error . ']<br/>');}
 	}
 	if($versie<$laatsteversie) {
 		$sql="insert into versie (versie) VALUES ('$laatsteversie');";
@@ -211,6 +228,6 @@ while($row = $result->fetch_assoc()){$versie = $row['versie'];}
 
 echo '<br/>Huidige versie database: '.$versie.'<br/><br>
 Geïnstalleerde versie HomewizardPHP: '.$laatsteversie.'<br/><br/>';
-echo '<form method="post"><input type="hidden" name="updatedatabase" value="Update Database" class="abutton settings gradient"/><input type="submit" name="updatedatabasenow" value="Update Database" class="abutton settings"/></form>';
+if($versie<$laatsteversie) echo '<form method="post"><input type="hidden" name="updatedatabase" value="Update Database" class="abutton settings gradient"/><input type="submit" name="updatedatabasenow" value="Update Database" class="abutton settings"/></form>';
 
 ?>

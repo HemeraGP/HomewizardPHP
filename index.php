@@ -335,7 +335,7 @@ if($authenticated == true) {
 				if($type=="smoke") $type = "Rook";
 				if($type=="light") $type = "Licht";
 				if(${'sensorstatus'.$row['id_sensor']} == "yes") {
-					echo '<td style="color:#F00; font-weight:bold">
+					echo '<td style="color:#F00; font-weight:bold" class="temp">
 							<form action="history.php" method="post" id="'.$row['name'].'">
 							<input type="hidden" name="filter" value="'.$row['name'].'">
 							<a href="#" onclick="document.getElementById(\''.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
@@ -347,7 +347,7 @@ if($authenticated == true) {
 							<a href="#" onclick="document.getElementById(\''.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
 						</form></td>';
 						}
-				if(${'sensorstatus'.$row['id_sensor']} == "yes") {echo '<td style="color:#A00; font-weight:bold">';} else {echo '<td>';}
+				if(${'sensorstatus'.$row['id_sensor']} == "yes") {echo '<td style="color:#A00; font-weight:bold" class="temp">';} else {echo '<td>';}
 				switch (${'sensorstatus'.$row['id_sensor']}){
 					case "no": switch ($type){
 						case "Magneet":echo 'Gesloten';Break;
