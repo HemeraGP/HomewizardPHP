@@ -168,14 +168,14 @@ if($actie_thuis=='yes'){
 	if($sensorstatus0=='yes') notificatie($email_notificatie ,'ROOK gedetecteerd op zolder' ,'ROOK gedetecteerd op zolder' );
 	if($sensorstatus1=='yes') {
 		if($laatste_beweging_garage_mail!=$sensortimestamp2) {
-			setparameter('laatste_poort_open_mail', $sensortimestamp1);
-			notificatie($email_notificatie ,'Poort is geopend' ,'Poort is geopend' );
+			setparameter('laatste_poort_open_mail', time());
+			if($laatste_poort_open_mail<time()-300) notificatie($email_notificatie ,'Poort is geopend' ,'Poort is geopend' );
 		}
 	}
 	if($sensorstatus2=='yes') {
 		if($laatste_beweging_garage_mail!=$sensortimestamp2) {
-			setparameter('laatste_beweging_garage_mail', $sensortimestamp2);
-			notificatie($email_notificatie ,'Beweging gedetecteerd in garage' ,'Beweging gedetecteerd in garage' );
+			setparameter('laatste_beweging_garage_mail', time());
+			if($laatste_beweging_garage_mail<time()-300) notificatie($email_notificatie ,'Beweging gedetecteerd in garage' ,'Beweging gedetecteerd in garage' );
 		}
 	}
 	if($sensorstatus3=='yes') notificatie($email_notificatie ,'ROOK gedetecteerd in de hall' ,'ROOK gedetecteerd in de hall' );
@@ -198,13 +198,13 @@ if($actie_thuis=='yes'){
 echo '</div>';
 
 if($actie_zonneluifel=='yes'){
-	if($rainmeter3h1 > 0) {
+	if($rainmeter3h3 > 0) {
 		if($Zonneluifellaatstomhoogslechtweer<time()-3600) {
 			somfy(13, 'up', 'Regen!', $email_notificatie, 'no');
 			setparameter('Zonneluifellaatstomhoogslechtweer', time());
 		}
 	}
-	if($windmeterws1 > 10 ||$windmetergu1 > 10) {
+	if($windmeterws2 > 10 ||$windmetergu2 > 10) {
 		if($Zonneluifellaatstomhoogslechtweer<time()-3600) {
 			somfy(13, 'up', 'Wind!', $email_notificatie, 'no');
 			setparameter('Zonneluifellaatstomhoogslechtweer', time());

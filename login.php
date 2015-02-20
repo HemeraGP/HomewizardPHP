@@ -37,7 +37,7 @@
         {
             unset($row['salt']);
             unset($row['password']);
-            $_SESSION['user'] = $row;
+            //$_SESSION['user'] = $row;
             header("Location: index.php");
             die("Redirecting to: index.php");
         }
@@ -60,14 +60,14 @@
     <input type="password" name="password" value="" />
     <br /><br />
 	<select name="expiry">
-        <option value="300">5 Minuten</option>
-        <option value="900">15 Minuten</option>
-        <option value="3600">1 Uur</option>
+        <option value="31536000">1 Jaar</option>
+        <option value="2678400">1 Maand</option>
+		<option value="604800">1 Week</option>
+		<option value="172800">2 Dagen</option>
         <option value="86400">1 Dag</option>
-        <option value="172800">2 Dagen</option>
-        <option value="604800">1 Week</option>
-		<option value="2678400">1 Maand</option>
-		<option value="31536000">1 Jaar</option>
+        <option value="3600">1 Uur</option>
+        <option value="900">15 Minuten</option>
+        <option value="300">5 Minuten</option>
     </select>    
     <input type="submit" value="Login" />
 </form>

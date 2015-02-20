@@ -134,7 +134,7 @@ function scene($switch, $action, $who, $notify, $failonly) {
 	if($debug=='yes') return $reply;
 }
 function laatsteschakeltijd($switch, $action, $who) {
-	global $jsonurl, $db, $debug;
+	global $db;
 	$sql ="select timestamp, type, who from switchhistory WHERE id_switch = $switch";
 	if(isset($action)) $sql .= " AND type like '$action'";
 	if(isset($who)) $sql .= " AND who like '$who'";
@@ -145,7 +145,7 @@ function laatsteschakeltijd($switch, $action, $who) {
 	return $row;	
 }
 function laatstesensortijd($sensor, $status) {
-	global $jsonurl, $db, $debug;
+	global $db;
 	$sql ="select time, status from history WHERE id_sensor = $sensor";
 	if(isset($status)) $sql .= " AND status like '$status'";
 	$sql .= " order by time DESC limit 0,1;";
@@ -155,7 +155,7 @@ function laatstesensortijd($sensor, $status) {
 	return $row;	
 }
 function laatstecrontijd($cron, $actie) {
-	global $db, $debug;
+	global $db;
 	$sql ="select cron, timestamp, actie from cronhistory WHERE cron = '$cron'";
 	if(isset($actie)) $sql .= " AND actie like '$actie'";
 	$sql .= " order by timestamp DESC limit 0,1;";
@@ -165,13 +165,13 @@ function laatstecrontijd($cron, $actie) {
 	return $row;	
 }
 function insertcrontijd($cron, $actie) {
-	global $db, $debug;
+	global $db;
 	$timestamp = time();
 	$sql ="INSERT IGNORE INTO cronhistory (`cron`, `timestamp`, `actie`) VALUES ('$cron', '$timestamp', '$actie');";
 	if(!$result = $db->query($sql)){ echo ('Error in sql '.$sql.'<br/> [' . $db->error . ']');}
 }
 function setparameter($variable, $value) {
-	global $db, $debug;
+	global $db;
 	$sql ="UPDATE settings SET value = '$value' WHERE variable like '$variable';";
 	if(!$result = $db->query($sql)){ echo ('Error in sql '.$sql.'<br/> [' . $db->error . ']');}
 }
