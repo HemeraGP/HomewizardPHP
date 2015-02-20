@@ -1,5 +1,5 @@
 </div>
-<div class="footer handje" onclick="window.location='settings.php?t=<?php echo time(); ?>';">
+<div class="footer">
 <br/>
 
 <!-- Please do not remove these lines -->
@@ -52,7 +52,7 @@ if(!$resultv = $db->query($sql)){ echo('There was an error running the query ['.
 while($row = $resultv->fetch_assoc()){$versie = $row['versie'];}
 $resultv->free();
 $db->close();
-echo '<small>Versie '.$versie.'. Opgemaakt in '.$total_time.' seconden op '; echo date("j M Y H:i:s"); echo '</small><br/><br/>'; 
+echo '<div class="footer handje" onclick="window.location=\'settings.php?t='.time().'\';"><small>Versie '.$versie.'. Opgemaakt in '.$total_time.' seconden op '; echo date("j M Y H:i:s"); echo '</small><br/><br/>'; 
 if(isset($_COOKIE["HomewizardPHP"])) echo '<form method="post" action="logout.php"><input type="submit" name="logout" value="Uitloggen" class="abutton settings gradient"/></form>';
 ?>
 </div>

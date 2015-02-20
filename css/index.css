@@ -8,7 +8,7 @@ a:visited{text-decoration:bold;color:#000}
 a:hover{text-decoration:underline;color:#000;}
 a:active{text-decoration:underline;color:#000}
 .header{clear:both;padding-bottom:10px;width:400px;max-width:90%;margin:0 auto;}
-.footer{clear:both;padding:20px;width:400px;max-width:90%;margin:0 auto; color:#aaa;}
+.footer{clear:both;padding:20px;width:90%;margin:0 auto; color:#aaa;}
 .footer a:visited{text-decoration:bold;color:#ccc}
 .footer a:hover{text-decoration:underline;color:#ccc;}
 .footer a:active{text-decoration:underline;color:#ccc}
