@@ -4,18 +4,18 @@ if(!isset($gebruiker)) {
 	header("Location: index.php");
 	die("Redirecting to index.php"); 
 } else {
-if(!empty($_POST['username']))
+if(!empty($_POST['newusername']))
     {
-        if(empty($_POST['username']))
+        if(empty($_POST['newusername']))
         {
             die("Please enter a username.");
         }
-        if(empty($_POST['password']))
+        if(empty($_POST['newpassword']))
         {
             die("Please enter a password.");
         }
         $query = "SELECT 1 FROM users WHERE username = :username";
-        $query_params = array(':username' => $_POST['username']);
+        $query_params = array(':username' => $_POST['newusername']);
         try
         {
             $stmt = $dbpdo->prepare($query);
@@ -33,13 +33,13 @@ if(!empty($_POST['username']))
         
        $query = "INSERT INTO users (username,password,salt) VALUES (:username,:password,:salt)";
        $salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));
-       $password = hash('sha256', $_POST['password'] . $salt);
+       $password = hash('sha256', $_POST['newpassword'] . $salt);
        for($round = 0; $round < 65536; $round++)
         {
             $password = hash('sha256', $password . $salt);
         }
         $query_params = array(
-            ':username' => $_POST['username'],
+            ':username' => $_POST['newusername'],
             ':password' => $password,
             ':salt' => $salt
 		);
@@ -61,10 +61,10 @@ if(!empty($_POST['username']))
 <h2>Registreer nieuwe gebruiker</h2>
 <form action="#" method="post">
     Gebruikersnaam:<br />
-    <input type="text" name="username" value="" />
+    <input type="text" name="newusername" value="" />
     <br /><br />
     Wactwoord:<br />
-    <input type="password" name="password" value="" />
+    <input type="password" name="newpassword" value="" />
     <br /><br />
 	<input type="hidden" name="gebruikers" value="Gebruikers" class="abutton settings gradient"/>
     <input type="submit" value="Register" />
