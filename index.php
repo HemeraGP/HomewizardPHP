@@ -389,11 +389,11 @@ if($toon_temperatuur=='yes') {
 		if($result->num_rows>0) {	
 			echo '<div><table width="100%"><tr><th></th><th>temp</th><th>hum</th></tr>';
 			while($row = $result->fetch_assoc()){
-				echo '<tr>';
-				if($result->num_rows>1) {echo '<td><form action="temp.php" method="post" id="temp'.$row['name'].'">
+				echo '<tr>
+				<td><form action="temp.php" method="post" id="temp'.$row['name'].'">
 							<input type="hidden" name="filter" value="'.$row['name'].'">
 							<a href="#" onclick="document.getElementById(\'temp'.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
-						</form></td>';} else { echo '<td></td>';}
+						</form></td>';
 				if(${'thermometerte'.$row['id_sensor']} < $row['tempk']) {
 					echo '<td class="blue temp">';
 				} else if(${'thermometerte'.$row['id_sensor']} > $row['tempw']) {
@@ -416,7 +416,10 @@ if($toon_temperatuur=='yes') {
 			echo '<div><table width="100%"><tr><th></th><th>temp</th><th>hum</th></tr>';
 			while($row = $result->fetch_assoc()){
 				echo '<tr>';
-				echo '<td></td>';
+				echo '<td><form action="temp.php" method="post" id="temp'.$row['name'].'">
+							<input type="hidden" name="filter" value="'.$row['name'].'">
+							<a href="#" onclick="document.getElementById(\'temp'.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
+						</form></td>';
 				if(${'thermometerte'.$row['id_sensor']} <= $row['tempk']) {
 					echo '<td class="blue temp">';
 				} else if(${'thermometerte'.$row['id_sensor']} >= $row['tempw']) {

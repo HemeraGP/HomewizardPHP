@@ -1,12 +1,12 @@
 <?php include "header.php";
-if(isset($_POST['limit'])) { $limit = $_POST['limit']; } else { $limit = 20;}
+if(isset($_POST['limit'])) { $limit = $_POST['limit']; } else { $limit = 30;}
 $sql = "SELECT date, mm FROM rain ORDER BY date DESC LIMIT 0,$limit";
 if(!$result = $db->query($sql)){ die('There was an error running the query [' . $db->error . ']');}
 echo '<div class="threecolumn">
 <form method="post" name="filter" id="filter">
 <select name="limit" class="abutton settings gradient" onChange="this.form.submit()">';
 if(isset($_POST['limit'])) print '<option selected>'.$_POST['limit'].'</option>';
-print '<option>20</option>
+print '<option>30</option>
 <option>50</option>
 <option>100</option>
 <option>500</option>

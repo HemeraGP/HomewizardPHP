@@ -119,9 +119,7 @@ if($authenticated==true) {
 	}
 	if(isset($_POST['updateswitches'])) { 
 		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">9</p>';
 		include "history_to_sql.php";
-		echo '</div>';
 	}
 	if(isset($_POST['actionscron'])) { 
 		$showparameters=false;
@@ -169,25 +167,8 @@ if($authenticated==true) {
 		$sql="DELETE FROM `users` WHERE username like '$wisgebruiker'";
 		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
 	}
-	if(isset($_POST['importeerparameters'])) { 
-		$sql="INSERT INTO `settings` (variable, value, favorite, user) SELECT variable, value, favorite, '$gebruiker' AS user FROM `settings` WHERE user like 'default' AND variable not in (select variable from `settings` where `user` like '$gebruiker')";
-		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
-		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' parameters toegevoegd.</div>';
-		$sql="INSERT INTO `sensors` (id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, user) SELECT id_sensor, volgorde, name, type, favorite, tempk, tempw, correctie, '$gebruiker' AS user FROM `sensors` WHERE user like 'default' AND CONCAT(id_sensor, type) not in (select CONCAT(id_sensor, type) from `sensors` where `user` like '$gebruiker')";
-		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
-		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' sensoren toegevoegd.</div>';
-		$sql="INSERT INTO `switches` (id_switch, name, type, favorite, volgorde, temp, user) SELECT id_switch, name, type, favorite, volgorde, temp, '$gebruiker' AS user FROM `switches` WHERE user like 'default' AND CONCAT(id_switch, type) not in (select CONCAT(id_switch, type) from `switches` where `user` like '$gebruiker')";
-		if(!$result = $db->query($sql)){ echo('<div class="item wide gradient"><p class="number">2</p><br/>There was an error running the query '.$sql.'<br/>[' . $db->error . ']</div>');}
-		echo '<div class="item wide gradient"><p class="number">2</p><br/>'.$db->affected_rows.' schakelaars toegevoegd.</div>';
-	}
 	if($gebruikers==true) { 
 		$showparameters=false;
-		echo '<div class="item wide gradient"><p class="number">2</p>';
-		echo '<br/><form method="post">
-			<input type="hidden" name="gebruikers" value="Gebruikers"/>
-			<input type="submit" name="importeerparameters" value="Importeer onbekende parameters voor deze gebruiker" class="abutton settings gradient"/>
-			</form>';
-		echo '</div>';
 		echo '<div class="item wide gradient"><p class="number">2</p>';
 		include "edit_account.php";
 		echo '</div>';

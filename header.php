@@ -33,6 +33,8 @@ $sql="select variable, value from settings WHERE user like '$gebruiker' order by
 $authenticated = false;
 
 if($_SERVER['REMOTE_ADDR']=='127.0.0.1' || isset($_COOKIE["HomewizardPHP"])) $authenticated = true; 
+
+
 if($authenticated==true && $debug=='yes') {error_reporting(E_ALL);ini_set("display_errors", "on");} 
 $actual_page = "ndex.php";
 if(isset($_SERVER['PHP_SELF'])) $actual_page = substr($_SERVER['PHP_SELF'], -9);

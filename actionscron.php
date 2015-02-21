@@ -195,7 +195,6 @@ if($actie_thuis=='yes'){
 		sleep(2);
 	}
 }
-echo '</div>';
 
 if($actie_zonneluifel=='yes'){
 	if($rainmeter3h3 > 0) {
