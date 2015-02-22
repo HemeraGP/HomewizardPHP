@@ -1,6 +1,6 @@
 <?php
 include_once "parameters.php";
-$laatsteversie = 20150221;
+$laatsteversie = 20150222;
 $sql="select versie from versie order by id desc limit 0,1";
 if(!$result = $db->query($sql)){ echo('There was an error running the query ['.$sql.'][' . $db->error . ']');}
 while($row = $result->fetch_assoc()){$versie = $row['versie'];}

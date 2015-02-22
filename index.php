@@ -17,10 +17,11 @@ if($authenticated == true) {
 	}
 }
 if($toon_radiatoren=='yes' || $toon_sensoren=='yes') {
-	$sql="SELECT a.id_sensor, te FROM temperature a INNER JOIN ( SELECT MAX(timestamp) timestamp, id_sensor FROM temperature b GROUP BY b.id_sensor ) b ON a.id_sensor = b.id_sensor AND a.timestamp = b.timestamp;";
+	$sql="SELECT a.id_sensor, te, hu FROM temperature a INNER JOIN ( SELECT MAX(timestamp) timestamp, id_sensor FROM temperature b GROUP BY b.id_sensor ) b ON a.id_sensor = b.id_sensor AND a.timestamp = b.timestamp;";
 	if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
 	while($row = $result->fetch_assoc()){
 		${'thermometerlastte'.$row['id_sensor']} = $row['te'];
+		${'thermometerlasthu'.$row['id_sensor']} = $row['hu'];
 	}
 }
 	
@@ -299,7 +300,7 @@ if($authenticated == true) {
 						</select>
 					</form>
 				</td>
-				<td width="75px" '.$tdstyle.' class="temp" align="right">';
+				<td width="75px" '.$tdstyle.' class="temp" align="left">';
 				if(!empty($row['temp']) || $row['temp']==0) {
 					echo '<form action="temp.php" method="post" id="temp'.$row['sname'].'">
 							<input type="hidden" name="filter" value="'.$row['sname'].'">
@@ -416,7 +417,10 @@ if($toon_temperatuur=='yes') {
 				else if(${'thermometerlastte'.$row['id_sensor']}>${'thermometerte'.$row['id_sensor']}+0.2) echo '&#x25BC;';
 				else if(${'thermometerlastte'.$row['id_sensor']}>${'thermometerte'.$row['id_sensor']}+2) echo '&#x25BC;&#x25BC;';
 				echo '</font></td>';
-				echo '<td class="temp">'.${'thermometerhu'.$row['id_sensor']}.' %</td></tr>';
+				echo '<td class="temp" align="left">'.${'thermometerhu'.$row['id_sensor']}.' %';
+				if(${'thermometerlasthu'.$row['id_sensor']}<${'thermometerhu'.$row['id_sensor']}) echo '&#x25B2;';
+				else if(${'thermometerlasthu'.$row['id_sensor']}>${'thermometerhu'.$row['id_sensor']}) echo '&#x25BC;';
+				echo '</td></tr>';
 			}
 			echo "</table></div>";
 		}
@@ -437,14 +441,17 @@ if($toon_temperatuur=='yes') {
 				if(${'thermometerte'.$row['id_sensor']} < $row['tempk']) $tempclass = 'class="blue temp"';
 				else if(${'thermometerte'.$row['id_sensor']} > $row['tempw']) $tempclass = 'class="red temp"';
 				else $tempclass = 'class="temp"';
-				echo '<td '.$tempclass.' align="right">';
+				echo '<td '.$tempclass.' align="center">';
 				echo number_format(${'thermometerte'.$row['id_sensor']}, 1, ',', ' ').' °C</td><td '.$tempclass.' align="left">';
 				if(${'thermometerlastte'.$row['id_sensor']}<${'thermometerte'.$row['id_sensor']}-2) echo '&#x25B2;&#x25B2;';
 				else if(${'thermometerlastte'.$row['id_sensor']}<${'thermometerte'.$row['id_sensor']}-0.2) echo '&#x25B2;';
 				else if(${'thermometerlastte'.$row['id_sensor']}>${'thermometerte'.$row['id_sensor']}+0.2) echo '&#x25BC;';
 				else if(${'thermometerlastte'.$row['id_sensor']}>${'thermometerte'.$row['id_sensor']}+2) echo '&#x25BC;&#x25BC;';
 				echo '</font></td>';
-				echo '<td class="temp">'.${'thermometerhu'.$row['id_sensor']}.' %</td></tr>';
+				echo '<td class="temp" align="center">'.${'thermometerhu'.$row['id_sensor']}.' %';
+				if(${'thermometerlasthu'.$row['id_sensor']}<${'thermometerhu'.$row['id_sensor']}) echo '&#x25B2;';
+				else if(${'thermometerlasthu'.$row['id_sensor']}>${'thermometerhu'.$row['id_sensor']}) echo '&#x25BC;';
+				echo '</td></tr>';
 			}
 			echo "</table></div>";
 		}
