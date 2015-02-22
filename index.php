@@ -303,19 +303,18 @@ if($authenticated == true) {
 				<td width="75px" '.$tdstyle.' class="temp" align="left">';
 				if(!empty($row['temp']) || $row['temp']==0) {
 					echo '<form action="temp.php" method="post" id="temp'.$row['sname'].'">
-							<input type="hidden" name="filter" value="'.$row['sname'].'">
-							<a href="#" onclick="document.getElementById(\'temp'.$row['sname'].'\').submit();" style="text-decoration:none" class="temp">';
-							if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo '<font color="#800">';
-							else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo '<font color="#008">';
-							else echo '<font color="#050">';
-							echo number_format(${'thermometerte'.$row['temp']}, 1, ',', ' ').'°C';
-							if(${'thermometerlastte'.$row['temp']}<${'thermometerte'.$row['temp']}-0.2) echo '&#x25B2;';
-							else if(${'thermometerlastte'.$row['temp']}>${'thermometerte'.$row['temp']}+0.2) echo '&#x25BC;';
-							
-				echo '</a>
+						<input type="hidden" name="filter" value="'.$row['sname'].'">
+						<a href="#" onclick="document.getElementById(\'temp'.$row['sname'].'\').submit();" ';
+						if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo 'style="color:#800">';
+						else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo 'style="color:#008">';
+						else echo 'style="color:#050">';
+						echo number_format(${'thermometerte'.$row['temp']}, 1, ',', ' ').'°C';
+						if(${'thermometerlastte'.$row['temp']}<${'thermometerte'.$row['temp']}-0.2) echo '&#x25B2;';
+						else if(${'thermometerlastte'.$row['temp']}>${'thermometerte'.$row['temp']}+0.2) echo '&#x25BC;';
+				echo '</a></font>
 						</form>';
 				}
-				echo '</font></td>
+				echo '</td>
 				</tr>';
 			}
 			echo '</tbody></table>';

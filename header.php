@@ -9,7 +9,6 @@
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="css/index.css" rel="stylesheet" type="text/css" />
 <title>HomewizardPHP</title>
 <?php 
 $time = microtime();
@@ -20,7 +19,6 @@ include_once "parameters.php";
 setlocale(LC_ALL,'nl_NL.UTF-8');
 setlocale(LC_ALL, 'nld_nld');
 date_default_timezone_set('Europe/Brussels');
-
 if(isset($_COOKIE["HomewizardPHP"])) $gebruiker = $_COOKIE["HomewizardPHP"]; else $gebruiker = 'default';
 $sql="select variable, value from settings WHERE user like '$gebruiker' order by variable asc";
 	if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
@@ -31,17 +29,13 @@ $sql="select variable, value from settings WHERE user like '$gebruiker' order by
 	}
 	$result->free();
 $authenticated = false;
-
 if($_SERVER['REMOTE_ADDR']=='127.0.0.1' || isset($_COOKIE["HomewizardPHP"])) $authenticated = true; 
-
-
 if($authenticated==true && $debug=='yes') {error_reporting(E_ALL);ini_set("display_errors", "on");} 
 $actual_page = "ndex.php";
 if(isset($_SERVER['PHP_SELF'])) $actual_page = substr($_SERVER['PHP_SELF'], -9);
-if ($actual_page=="index.php") {
-	print '<meta http-equiv="refresh" content="'.$refreshinterval.'" />';
-}
+if($actual_page=="index.php") print '<meta http-equiv="refresh" content="'.$refreshinterval.'" />';
 echo '
+<link href="css/index.css" rel="stylesheet" type="text/css" />
 <style>
 body {'.$css_body.';}
 .item {'.$css_item.';}
@@ -52,9 +46,9 @@ h3 {'.$css_h3.';}
 .blue {'.$css_blue.'}
 .red {'.$css_red.'}
 .green {'.$css_green.'}
-</style>';
+</style>
+<script type="text/javascript" language="javascript" src="js/prefixfree.min.js"></script>';
 ?>
-
 </head>
 <body>
 <div class="header"><a href="index.php" class="abutton home gradient" style="padding:10px 0px;">Welkom <?php if($gebruiker=='default') echo 'bezoeker'; else echo $gebruiker;?></a></div>

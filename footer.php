@@ -1,7 +1,6 @@
 </div>
 <div class="footer">
 <br/>
-
 <!-- Please do not remove these lines -->
 Get the code at <a href="http://homewizard.org/index.php" title="HomeWizard.org" style="color:#CCC" target="_blank">HomeWizard.org</a> <br/><br/>
 Created by <a href="http://egregius.be" title="egregius.be" style="color:#CCC" target="_blank">egregius.be</a><br/><br/><br/>
