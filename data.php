@@ -43,7 +43,7 @@ if (!$data) {
 		${'thermometerte'.$thermometer['id']} = $thermometer['te'];
 		${'thermometerhu'.$thermometer['id']} = $thermometer['hu'];
 	}
-	$sql = "select id_sensor, correctie from sensors where type like 'temp'";
+	$sql = "select id_sensor, correctie from sensors where type like 'temp' and user like 'default'";
 	if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
 	while($row = $result->fetch_assoc()){
 		${'thermometerte'.$row['id_sensor']} = ${'thermometerte'.$row['id_sensor']} + $row['correctie'];
