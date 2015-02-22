@@ -405,7 +405,7 @@ if($toon_temperatuur=='yes') {
 				echo '<tr>
 				<td><form action="temp.php" method="post" id="temp'.$row['name'].'">
 							<input type="hidden" name="filter" value="'.$row['name'].'">
-							<a href="#" onclick="document.getElementById(\'temp'.$row['name'].'\').submit();" style="text-decoration:none">'.$row['id_sensor'].$row['name'].'</a>
+							<a href="#" onclick="document.getElementById(\'temp'.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
 						</form></td>';
 				if(${'thermometerte'.$row['id_sensor']} < $row['tempk']) $tempclass = 'class="blue temp"';
 				else if(${'thermometerte'.$row['id_sensor']} > $row['tempw']) $tempclass = 'class="red temp"';
