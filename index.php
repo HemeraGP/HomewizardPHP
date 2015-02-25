@@ -14,6 +14,11 @@ if($authenticated == true) {
 		if($_POST['updactie']=='off') $value = 'no'; else $value = 'yes';
 		$sql="update settings set value = '$value' where variable like '$variable';";
 		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
+		$timestamp = time();
+		$variableupdactie = 'timestamp_'.$variable;
+		$variableupdactie .= '_'.$value;
+		$sql="INSERT INTO settings (variable, value, user) values ('$variableupdactie', '$timestamp', 'default') ON DUPLICATE KEY UPDATE `value`='$timestamp'";
+		if(!$result = $db->query($sql)){ echo('There was an error running the query [' . $db->error . ']');}
 	}
 }
 if($toon_radiatoren=='yes' || $toon_sensoren=='yes') {
@@ -305,9 +310,9 @@ if($authenticated == true) {
 					echo '<form action="temp.php" method="post" id="temp'.$row['sname'].'">
 						<input type="hidden" name="filter" value="'.$row['sname'].'">
 						<a href="#" onclick="document.getElementById(\'temp'.$row['sname'].'\').submit();" ';
-						if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo 'style="color:#800">';
-						else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo 'style="color:#008">';
-						else echo 'style="color:#050">';
+						if(${'thermometerte'.$row['temp']}>${'switchstatus'.$row['id_switch']}+1) echo 'style="color:#800;text-decoration:none">';
+						else if(${'thermometerte'.$row['temp']}<${'switchstatus'.$row['id_switch']}-1) echo 'style="color:#008;text-decoration:none">';
+						else echo 'style="color:#050;text-decoration:none">';
 						echo number_format(${'thermometerte'.$row['temp']}, 1, ',', ' ').'°C';
 						if(${'thermometerlastte'.$row['temp']}<${'thermometerte'.$row['temp']}-0.2) echo '&#x25B2;';
 						else if(${'thermometerlastte'.$row['temp']}>${'thermometerte'.$row['temp']}+0.2) echo '&#x25BC;';
@@ -402,21 +407,25 @@ if($toon_temperatuur=='yes') {
 			echo '<div><table width="100%"><tr><th></th><th colspan="2">temp</th><th>hum</th></tr>';
 			while($row = $result->fetch_assoc()){
 				echo '<tr>
-				<td><form action="temp.php" method="post" id="temp'.$row['name'].'">
-							<input type="hidden" name="filter" value="'.$row['name'].'">
+				<td><form action="temp.php" method="post" id="temp'.$row['name'].'"><input type="hidden" name="filter" value="'.$row['name'].'">
 							<a href="#" onclick="document.getElementById(\'temp'.$row['name'].'\').submit();" style="text-decoration:none">'.$row['name'].'</a>
 						</form></td>';
 				if(${'thermometerte'.$row['id_sensor']} < $row['tempk']) $tempclass = 'class="blue temp"';
 				else if(${'thermometerte'.$row['id_sensor']} > $row['tempw']) $tempclass = 'class="red temp"';
 				else $tempclass = 'class="temp"';
-				echo '<td '.$tempclass.' align="right">';
-				echo number_format(${'thermometerte'.$row['id_sensor']}, 1, ',', ' ').' °C</td><td '.$tempclass.' align="left">';
+				echo '<td '.$tempclass.' align="right" width="80px"><form action="temp.php" method="post" id="temp'.$row['name'].'"><input type="hidden" name="filter" value="'.$row['name'].'">
+							<a href="#" onclick="document.getElementById(\'temp'.$row['name'].'\').submit();" ';
+						if(${'thermometerte'.$row['id_sensor']} < $row['tempk']) echo 'style="color:#008;text-decoration:none">';
+						else if(${'thermometerte'.$row['id_sensor']} > $row['tempw']) echo 'style="color:#800;text-decoration:none">';
+						else echo 'style="text-decoration:none">';
+				echo number_format(${'thermometerte'.$row['id_sensor']}, 1, ',', ' ').' °C</a>
+				</form></td><td '.$tempclass.' align="left">';
 				if(${'thermometerlastte'.$row['id_sensor']}<${'thermometerte'.$row['id_sensor']}-2) echo '&#x25B2;&#x25B2;';
 				else if(${'thermometerlastte'.$row['id_sensor']}<${'thermometerte'.$row['id_sensor']}-0.2) echo '&#x25B2;';
 				else if(${'thermometerlastte'.$row['id_sensor']}>${'thermometerte'.$row['id_sensor']}+0.2) echo '&#x25BC;';
 				else if(${'thermometerlastte'.$row['id_sensor']}>${'thermometerte'.$row['id_sensor']}+2) echo '&#x25BC;&#x25BC;';
 				echo '</font></td>';
-				echo '<td class="temp" align="left">'.${'thermometerhu'.$row['id_sensor']}.' %';
+				echo '<td class="temp" align="left" width="70px">'.${'thermometerhu'.$row['id_sensor']}.' %';
 				if(${'thermometerlasthu'.$row['id_sensor']}<${'thermometerhu'.$row['id_sensor']}) echo '&#x25B2;';
 				else if(${'thermometerlasthu'.$row['id_sensor']}>${'thermometerhu'.$row['id_sensor']}) echo '&#x25BC;';
 				echo '</td></tr>';

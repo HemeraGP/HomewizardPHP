@@ -28,6 +28,7 @@ a:active{text-decoration:underline;color:#000}
 @media only screen and (max-width:550px){select.abutton{min-width:50px;padding-left:18px} .item{width:99%;max-width:538px;}}
 .gradient{background:#888;background:linear-gradient(to bottom, #eee, #999);background-repeat:no-repeat;}
 .abutton{border:0px solid #aaa;display:inline-block;padding:9px 0px;text-decoration:none;margin:0;width:50px;min-width:52px;box-shadow:0px 0px 0px 1px #999 inset;border-radius:6px;}
+.month{width:80px;}
 .settings{width:100%;max-width:300px;padding:8px 0px; margin-bottom:12px;}
 .home{width:100%;}
 .abuttonsomfy{border:0px solid #f00;padding:0px 0px;text-decoration:none;margin:0;width:150px;font-size:0px;}

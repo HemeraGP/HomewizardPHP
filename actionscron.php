@@ -17,59 +17,51 @@ $authenticated=true;
 include "data.php";
 include "functions.php";
 
-if($actie_brander=='yes') {
-	if($switchstatus6>$thermometerte4 || $switchstatus7>$thermometerte6 || $switchstatus8>$thermometerte7 || $switchstatus14>$thermometerte5 || $switchstatus15>$thermometerte5) {
-		if($switchstatus12=='off') {schakel(12, 'on', 'Auto', $email_notificatie, 'yes');sleep(2);} 
-	} else {
-		if($switchstatus12=='on') {schakel(12, 'off', 'Auto', $email_notificatie, 'yes');sleep(2);}
-	}
-}
-
 if($actie_timer_living=='yes'){
-	$tempw = 20;
-	$tempk = 14;
+	$tempwliving = 20;
+	$tempkliving = 16;
 	$warm=false;
-	if($thermometerte5<$tempw) $voorwarmen = ceil(($tempw-$thermometerte5)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
+	if($thermometerte5<$tempwliving) $voorwarmen = ceil(($tempwliving-$thermometerte5)*($tempwliving-$thermometerte1)*30); else $voorwarmen = 0;
 	if(in_array(date('N', time()), array(1,2,3,4)) && time()>=(strtotime('18:00')-$voorwarmen) && time()<=strtotime('22:00')) $warm=true;
 	else if (in_array(date('N', time()), array(5,6,7)) && time()>=(strtotime('7:00')-$voorwarmen) && time()<=strtotime('23:00')) $warm=true;
-	else if(time()>=strtotime('8:00') && time()<=strtotime('22:00') && ($switchstatus14>$tempk || $switchstatus15>$tempk)) $warm=true;
+	else if(time()>=strtotime('8:00') && time()<=strtotime('22:00') && ($switchstatus14>$tempkliving || $switchstatus15>$tempkliving)) $warm=true;
 
-	if($warm==true && $thermometerte1<=20) {
-		if($switchstatus14<$tempw) {radiator(14, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
-		if($switchstatus14<$tempw) {radiator(15, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
+	if($warm==true && $thermometerte1<=20 && $actie_thuis=='yes') {
+		if($switchstatus14<$tempwliving) {radiator(14, $tempwliving, 'Auto', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus14<$tempwliving) {radiator(15, $tempwliving, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else {
-		if($switchstatus14>$tempk) {
+		if($switchstatus14>$tempkliving) {
 			$laatsteschakel = laatsteschakeltijd(14,null, null);
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(14, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(14, $tempkliving, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
-		if($switchstatus15>$tempk) {
+		if($switchstatus15>$tempkliving) {
 			$laatsteschakel = laatsteschakeltijd(15,null, null);
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(15, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(15, $tempkliving, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 	}
 }
 
 if($actie_timer_badkamer=='yes'){
-	$tempw = 21;
-	$tempn = 17;
-	$tempk = 10;
+	$tempwbadkamer = 21;
+	$tempnbadkamer = 16;
+	$tempkbadkamer = 14;
 	$warm=false;
 	$lauw=false;
-	if($thermometerte4<$tempw) $voorwarmen = ceil(($tempw-$thermometerte4)*($tempw-$thermometerte1)*30); else $voorwarmen = 0;
+	if($thermometerte4<$tempwbadkamer) $voorwarmen = ceil(($tempwbadkamer-$thermometerte4)*($tempwbadkamer-$thermometerte1)*30); else $voorwarmen = 0;
 	if(in_array(date('N', time()), array(1,2,3,4,5)) && time()>=(strtotime('6:00')-$voorwarmen) && time()<=(strtotime('7:30'))) $warm=true;
 	else if(in_array(date('N', time()), array(6,7)) && time()>=(strtotime('7:30')-$voorwarmen) && time()<=(strtotime('9:30'))) $warm=true;
 	else if(time()>strtotime('18:00') && time()<strtotime('23:00')) $lauw=true;
 	
-	if($warm==true && $thermometerte1<=21) {
-		if($switchstatus6<$tempw) {radiator(6, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
-	} else if($lauw==true && $thermometerte1<18) {
-		if($switchstatus6<$tempn) {radiator(6, $tempn, 'Auto', $email_notificatie, 'yes');sleep(2);}
+	if($warm==true && $thermometerte1<=21 && $actie_thuis=='yes') {
+		if($switchstatus6<$tempwbadkamer) {radiator(6, $tempwbadkamer, 'Auto', $email_notificatie, 'yes');sleep(2);}
+	} else if($lauw==true && $thermometerte1<18 && $actie_thuis=='yes') {
+		if($switchstatus6<$tempnbadkamer) {radiator(6, $tempnbadkamer, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else if($warm==false && $lauw==false) {
-		if($switchstatus6>$tempk) {
+		if($switchstatus6>$tempkbadkamer) {
 			$laatsteschakel = laatsteschakeltijd(6,null, null);
-			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(6, $tempk, 'Auto', $email_notificatie, 'yes');sleep(2);
+			if($laatsteschakel['timestamp']<(time()-7200)) {radiator(6, $tempkbadkamer, 'Auto', $email_notificatie, 'yes');sleep(2);
 			}
 		}
 	}
@@ -85,7 +77,7 @@ if($actie_timer_slaapkamer=='yes'){
 	} else if(in_array(date('N', time()), array(5,6,7))) {
 		if((time()>=(strtotime('22:00')-$voorwarmen)) && time()<=(strtotime('23:30'))) $warm=true;
 	}
-	if($warm==true && $thermometerte1<=13) {
+	if($warm==true && $thermometerte1<=13 && $actie_thuis=='yes') {
 		if($switchstatus7<$tempw) {radiator(7, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus7>$tempk) {
@@ -110,7 +102,7 @@ if($actie_timer_slaapkamer_tobi=='yes'){
 			if((time()>=(strtotime('20:30')-$voorwarmen)) && time()<=(strtotime('21:30'))) $warm=true;
 		}
 	}
-	if($warm==true && $thermometerte1<=13) {
+	if($warm==true && $thermometerte1<=13 && $actie_thuis=='yes') {
 		if($switchstatus8<$tempw) {radiator(8, $tempw, 'Auto', $email_notificatie, 'yes');sleep(2);}
 	} else {
 		if($switchstatus8>$tempk) {
@@ -148,7 +140,26 @@ if($actie_timer_pluto=='yes'){
 		}
 	}
 }
-
+if($actie_slapen=='yes'){
+	if($timestamp_actie_slapen_yes>time()-60 && $switchstatus10<70) {dim(10, 70, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	else if($timestamp_actie_slapen_yes<time()-60 && $switchstatus10>50) {dim(10, 50, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	else if($timestamp_actie_slapen_yes<time()-120 && $switchstatus10>30) {dim(10, 30, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	else if($timestamp_actie_slapen_yes<time()-180 && $switchstatus10>0) {dim(10, 0, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	if($timestamp_actie_slapen_yes>time()-60 && $switchstatus11<50) {dim(11, 50, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	else if($timestamp_actie_slapen_yes<time()-60 && $switchstatus11>30) {dim(11, 30, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	else if($timestamp_actie_slapen_yes<time()-120 && $switchstatus11>0) {dim(11, 0, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	if(date('H', time())>18) {
+		if($switchstatus14>$tempkliving) {radiator(14, $tempkliving, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus15>$tempkliving) {radiator(15, $tempkliving, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+		if($switchstatus6>$tempkbadkamer) {radiator(6, $tempkbadkamer, 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	}
+	if($switchstatus1=='on') {schakel(1, 'off', 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus2=='on') {schakel(2, 'off', 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus3=='on') {schakel(3, 'off', 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus4=='on') {schakel(4, 'off', 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus5=='on') {schakel(5, 'off', 'Sleep', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus20=='on') {schakel(20, 'off', 'Sleep', $email_notificatie, 'yes');sleep(2);}
+}
 if($actie_thuis=='yes'){
 	if($actie_notify_poort=='yes') {
 		$json = file_get_contents($jsonurl.'nf/edit/1/4/null/0/yes');
@@ -165,21 +176,40 @@ if($actie_thuis=='yes'){
 		sleep(2);
 	}
 } else {
-	if($sensorstatus0=='yes') notificatie($email_notificatie ,'ROOK gedetecteerd op zolder' ,'ROOK gedetecteerd op zolder' );
-	if($sensorstatus1=='yes') {
-		if($laatste_beweging_garage_mail!=$sensortimestamp2) {
-			setparameter('laatste_poort_open_mail', time());
-			if($laatste_poort_open_mail<time()-300) notificatie($email_notificatie ,'Poort is geopend' ,'Poort is geopend' );
+	if($switchstatus1=='on') {schakel(1, 'off', 'Away', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus2=='on') {schakel(2, 'off', 'Away', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus3=='on') {schakel(3, 'off', 'Away', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus4=='on') {schakel(4, 'off', 'Away', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus5=='on') {schakel(5, 'off', 'Away', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus10>0) {dim(10, 0, 'Away', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus11>0) {dim(11, 0, 'Away', $email_notificatie, 'yes');sleep(2);}
+	if($switchstatus20=='on') {schakel(20, 'off', 'Away', null, null); sleep(2);}
+	if($timestamp_actie_thuis_no<time()-300) {
+		if($sensorstatus0=='yes') {
+			setparameter('laatste_rook_zolder_mail', time());
+			if($laatste_rook_zolder_mail<time()-300) notificatie($email_notificatie ,'ROOK gedetecteerd op zolder' ,'ROOK gedetecteerd op zolder' );
+		}
+		if($sensorstatus1=='yes') {
+			if($laatste_beweging_garage_mail!=$sensortimestamp2) {
+				setparameter('laatste_poort_open_mail', time());
+				if($laatste_poort_open_mail<time()-300) notificatie($email_notificatie ,'Poort is geopend' ,'Poort is geopend' );
+			}
+		}
+		if($sensorstatus2=='yes') {
+			if($laatste_beweging_garage_mail!=$sensortimestamp2) {
+				setparameter('laatste_beweging_garage_mail', time());
+				if($laatste_beweging_garage_mail<time()-300) notificatie($email_notificatie ,'Beweging gedetecteerd in garage' ,'Beweging gedetecteerd in garage' );
+			}
+		}
+		if($sensorstatus3=='yes') {
+			setparameter('laatste_rook_hall_mail', time());
+			if($laatste_rook_hall_mail<time()-300) notificatie($email_notificatie ,'ROOK gedetecteerd in de hall' ,'ROOK gedetecteerd in de hall' );
+		}
+		if($sensorstatus4=='yes') {
+			setparameter('laatste_bel_voordeur_mail', time());
+			if($laatste_bel_voordeur_mail<time()-300) notificatie($email_notificatie ,'Bel voordeur ingedrukt' ,'Bel voordeur ingedrukt' );
 		}
 	}
-	if($sensorstatus2=='yes') {
-		if($laatste_beweging_garage_mail!=$sensortimestamp2) {
-			setparameter('laatste_beweging_garage_mail', time());
-			if($laatste_beweging_garage_mail<time()-300) notificatie($email_notificatie ,'Beweging gedetecteerd in garage' ,'Beweging gedetecteerd in garage' );
-		}
-	}
-	if($sensorstatus3=='yes') notificatie($email_notificatie ,'ROOK gedetecteerd in de hall' ,'ROOK gedetecteerd in de hall' );
-	if($sensorstatus4=='yes') notificatie($email_notificatie ,'Bel voordeur ingedrukt' ,'Bel voordeur ingedrukt' );
 	if($actie_notify_poort=='no') {
 		$json = file_get_contents($jsonurl.'nf/edit/1/4/null/0,2/yes');
 		$data = null;
@@ -231,5 +261,12 @@ if($actie_batterij=='yes'){
 			}
 	}
 } 
+if($actie_brander=='yes') {
+	if($switchstatus6>$thermometerte4 || $switchstatus7>$thermometerte6 || $switchstatus8>$thermometerte7 || $switchstatus14>$thermometerte5 || $switchstatus15>$thermometerte5) {
+		if($switchstatus12=='off') {schakel(12, 'on', 'Auto', $email_notificatie, 'yes');sleep(2);} 
+	} else {
+		if($switchstatus12=='on') {schakel(12, 'off', 'Auto', $email_notificatie, 'yes');sleep(2);}
+	}
+}
 if(!isset($_POST['actionscron']) && !isset($_POST['showtest'])) {ob_clean(); $db->close();}
 ?>
