@@ -16,4 +16,4 @@ Mogelijkheden:
     Bekijk de huidige gegevens van Energylink
     Conditioneel schakelen dmv cronjob
 
-Screenshots en alle informatie is te vinden op http://homewizard.org/index.php
+Screenshots, alle informatie en de laatste versies zijn te vinden op http://homewizard.org
